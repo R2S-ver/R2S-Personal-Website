@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R WANG | HYBRID MISSION CONTROL</title>
+    <title>R WANG | MISSION CONTROL HUB</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #050505;
-            --panel: rgba(15, 15, 15, 0.85);
+            --panel: rgba(12, 12, 12, 0.9);
             --accent: #ff5f1f; /* International Orange */
+            --terminal-green: #00ff41;
             --text: #ffffff;
-            --text-dim: #888;
+            --text-dim: #777;
             --border: #222;
             --stripe-red: #9a2b22;
             --stripe-yellow: #e49e49;
@@ -30,25 +31,15 @@
             line-height: 1.4;
         }
 
-        /* --- INTERACTIVE NEURAL BACKGROUND --- */
-        #canvas-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
-        }
+        /* --- INTERACTIVE NEURAL BACKGROUND (OPTIMIZED) --- */
+        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.4; }
 
-        /* --- REVEAL ANIMATIONS (APPLE BREATHING) --- */
-        .reveal { 
-            opacity: 0; 
-            transform: translateY(30px); 
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); 
-        }
-        .reveal.active { 
-            opacity: 1; 
-            transform: translateY(0); 
-        }
+        /* --- REVEAL ANIMATIONS --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
         /* --- LAYOUT --- */
-        .container { max-width: 1300px; margin: 0 auto; padding: 0 40px; position: relative; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 40px; }
 
         nav {
             position: fixed; top: 0; width: 100%; padding: 20px 40px;
@@ -58,14 +49,24 @@
             font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px;
         }
 
-        /* --- HERO --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; }
-        .hero h1 { font-size: clamp(4rem, 12vw, 8rem); text-transform: uppercase; line-height: 0.85; font-weight: 900; letter-spacing: -2px; }
-        .hero-sub { color: var(--accent); font-family: var(--font-mono); font-size: 14px; margin-bottom: 15px; }
+        /* --- HERO & TERMINAL --- */
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+        .hero-text { flex: 1; }
+        .hero h1 { font-size: clamp(4rem, 10vw, 8rem); text-transform: uppercase; line-height: 0.85; font-weight: 900; letter-spacing: -2px; }
+        
+        .terminal-window {
+            width: 380px; height: 220px; background: #000; border: 1px solid var(--border);
+            border-radius: 6px; padding: 15px; position: relative; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .terminal-header { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .terminal-body { font-family: var(--font-mono); font-size: 11px; color: var(--terminal-green); line-height: 1.5; }
+        .cursor { display: inline-block; width: 8px; height: 14px; background: var(--terminal-green); animation: blink 1s infinite; vertical-align: middle; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         /* --- BENTO NAV --- */
         .bento-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 240px; gap: 15px; margin-bottom: 100px;
+            display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 220px; gap: 15px; margin-bottom: 100px;
         }
         .bento-item {
             background: var(--panel); border: 1px solid var(--border); padding: 25px;
@@ -73,34 +74,30 @@
             transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1); display: flex; flex-direction: column; justify-content: space-between;
             overflow: hidden; backdrop-filter: blur(5px);
         }
-        .bento-item:hover { 
-            border-color: var(--accent); transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-        }
-        .bento-item h3 { font-size: 1.2rem; text-transform: uppercase; }
+        .bento-item:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        .bento-item h3 { font-size: 1.1rem; text-transform: uppercase; }
         .bento-item .tag { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); }
         .large { grid-column: span 2; grid-row: span 2; }
         .wide { grid-column: span 2; }
 
-        /* --- SECTION STYLING --- */
+        /* --- DETAIL SECTIONS --- */
         .detail-section { padding: 100px 0; border-top: 1px solid var(--border); }
         .section-header { margin-bottom: 50px; }
         .section-header h2 { font-size: 3.5rem; color: var(--accent); text-transform: uppercase; font-weight: 900; }
 
-        /* TECHNICAL DOSSIER LAYOUT */
         .dossier-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .tech-box { background: rgba(20,20,20,0.6); padding: 25px; border-left: 2px solid var(--accent); height: 100%; }
-        .tech-box h4 { font-size: 11px; font-family: var(--font-mono); color: var(--accent); margin-bottom: 10px; text-transform: uppercase; }
+        .tech-box { background: rgba(20,20,20,0.6); padding: 25px; border-left: 2px solid var(--accent); }
+        .tech-box h4 { font-size: 11px; font-family: var(--font-mono); color: var(--accent); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
         
         .software-tag { 
-            display: inline-block; padding: 4px 10px; background: #222; 
-            font-family: var(--font-mono); font-size: 10px; margin: 0 5px 5px 0; border: 1px solid #333;
+            display: inline-block; padding: 4px 10px; background: #1a1a1a; 
+            font-family: var(--font-mono); font-size: 10px; margin: 0 4px 4px 0; border: 1px solid #333; color: #eee;
         }
 
-        .material-list { list-style: none; font-family: var(--font-mono); font-size: 12px; }
-        .material-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #222; }
+        .skill-list { list-style: none; font-family: var(--font-mono); font-size: 13px; color: #fff; margin-bottom: 20px;}
+        .skill-list li { margin-bottom: 8px; border-bottom: 1px solid #222; padding-bottom: 4px; }
 
-        /* DECORATION */
+        /* --- UI DECO --- */
         .tri-color { display: flex; height: 5px; width: 100px; gap: 4px; margin-top: 20px; }
         .s-red { background: var(--stripe-red); flex: 1; }
         .s-yellow { background: var(--stripe-yellow); flex: 1; }
@@ -116,149 +113,149 @@
 
     <nav>
         <div>R_WANG // HYBRID_SYSTEM</div>
-        <div>ST_0518: <span id="clock">00:00:00</span> // ROTTERDAM_NL</div>
+        <div>SYS_TIME: <span id="clock">00:00:00</span> // ROTTERDAM_NL</div>
     </nav>
 
     <div class="container">
         
-        <header class="hero reveal">
-            <div class="hero-sub">ESTABLISHING CONNECTION... [STABLE]</div>
-            <h1>Hybrid<br><span style="color:var(--accent)">Designer.</span></h1>
-            <div class="tri-color">
-                <div class="s-red"></div><div class="s-yellow"></div><div class="s-teal"></div>
+        <header class="hero">
+            <div class="hero-text reveal">
+                <div class="hero-sub" style="color: var(--accent); font-family: var(--font-mono); font-size: 12px;">DESIGNER_ID: R_WANG_0518</div>
+                <h1>Hybrid<br><span style="color:var(--accent)">Designer.</span></h1>
+                <div class="tri-color">
+                    <div class="s-red"></div><div class="s-yellow"></div><div class="s-teal"></div>
+                </div>
+                <p style="max-width: 500px; color: var(--text-dim); margin-top: 25px;">
+                    Bridging the gap between <strong>Technical Engineering</strong> and <strong>Modern Aesthetics</strong>. Focused on modular hardware and functional logic.
+                </p>
             </div>
-            <p style="max-width: 550px; color: var(--text-dim); margin-top: 25px; font-size: 1.1rem;">
-                Bridging the gap between <strong>Advanced Engineering</strong> and <strong>Modern Industrial Aesthetics</strong>. Specializing in functional prototypes and electronics-integrated design.
-            </p>
+
+            <div class="terminal-window reveal" style="transition-delay: 0.2s;">
+                <div class="terminal-header">CONSOLE // ROOT_ACCESS</div>
+                <div class="terminal-body" id="terminal-content">
+                    > SYSTEM_ONLINE: TRUE<br>
+                    > ESTABLISHING_LINK...<br>
+                    > ACCESSING_DIRECTORY: /DIY_ARCHIVE/<br>
+                    > LOADING_MODULAR_LOGIC...<br>
+                    > ACCESS_GRANTED.<br>
+                    <span class="cursor"></span>
+                </div>
+            </div>
         </header>
 
         <div class="bento-grid">
             <a href="#projects" class="bento-item large reveal">
-                <span class="tag">01_OPERATIONS</span>
+                <span class="tag">01_LOGS</span>
                 <div>
-                    <h3>Operational<br>Prototypes</h3>
-                    <p style="font-size: 13px; color:var(--text-dim); margin-top: 10px;">Case studies on ballistics, mechanical design, and testing platforms.</p>
+                    <h3>DIY Projects &<br>Personal Interest</h3>
+                    <p style="font-size: 13px; color:var(--text-dim); margin-top: 10px;">Hands-on engineering: from ballistic carriers to light scattering platforms.</p>
                 </div>
                 <div style="font-size: 30px; color: var(--accent);">↘</div>
             </a>
-            <a href="#about" class="bento-item reveal">
+            <a href="#personnel" class="bento-item reveal">
                 <span class="tag">02_IDENT</span>
-                <h3>Biography</h3>
+                <h3>Personnel</h3>
                 <div style="font-size: 20px; color: var(--accent);">↘</div>
             </a>
-            <a href="#skills" class="bento-item reveal">
-                <span class="tag">03_STACK</span>
-                <h3>Tech Stack</h3>
+            <a href="#contact" class="bento-item reveal">
+                <span class="tag">03_UPLINK</span>
+                <h3>Contact</h3>
                 <div style="font-size: 20px; color: var(--accent);">↘</div>
             </a>
-            <a href="https://your-ppt-link.com" target="_blank" class="bento-item wide reveal">
-                <span class="tag">DATA_LINK</span>
-                <h3>Comprehensive Archive (PPT)</h3>
+            <a href="#" target="_blank" class="bento-item wide reveal">
+                <span class="tag">SECURE_ARCHIVE</span>
+                <h3>Full Portfolio (PPT)</h3>
                 <div style="font-size: 20px; color: var(--accent);">↗</div>
             </a>
         </div>
 
-        <section id="about" class="detail-section reveal">
+        <section id="personnel" class="detail-section reveal">
             <div class="section-header">
                 <h2>// Personnel</h2>
             </div>
             <div class="dossier-grid">
                 <div>
-                    <p style="font-size: 1.2rem; line-height: 1.6;">
-                        I am <span style="color:var(--accent); font-weight:bold;">R WANG</span>, a Hybrid Designer who prioritizes the fusion of high-level aesthetics with technical feasibility. 
+                    <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 25px;">
+                        I am <span style="color:var(--accent); font-weight:bold;">R WANG</span>, a Hybrid Designer driven by the synergy of aesthetics and technology. Currently studying <span style="color:white;">Industrial Product Design</span> in Rotterdam.
                     </p>
-                    <p style="margin-top: 20px; color: var(--text-dim);">
-                        Currently at <span style="color:white;">Rotterdam University of Applied Sciences</span>, I explore how constructivist design can solve real-world engineering problems. My interest lies deep in Electrical Engineering and electronic integration within physical products.
-                    </p>
-                    <div class="tech-box" style="margin-top: 30px;">
-                        <h4>EDUCATION_RECORD</h4>
-                        <p style="font-family: var(--font-mono); font-size: 13px;">
-                            2023 - NOW: Ind. Product Design, University of ABC (RUAS)<br>
-                            2017 - 2022: OSG Hugo de Groot
-                        </p>
+                    <div class="tech-box">
+                        <h4>CORE_CAPABILITIES</h4>
+                        <ul class="skill-list">
+                            <li>> 3D Modeling & Printing</li>
+                            <li>> Technical Prototyping & Testing</li>
+                            <li>> Industrial Sketching & Visual Communication</li>
+                        </ul>
+                        <h4>SOFTWARE_SUITE</h4>
+                        <div class="software-container">
+                            <span class="software-tag">SolidWorks</span>
+                            <span class="software-tag">Blender</span>
+                            <span class="software-tag">KeyShot</span>
+                            <span class="software-tag">Photoshop</span>
+                            <span class="software-tag">Clip Studio Paint</span>
+                            <span class="software-tag">DaVinci Resolve</span>
+                        </div>
                     </div>
                 </div>
                 <div class="tech-box">
                     <h4>INTEREST_FIELDS</h4>
-                    <ul class="material-list">
-                        <li class="material-item">Electronics & Electrical Eng.<span>[ACTV]</span></li>
-                        <li class="material-item">Material Research<span>[ACTV]</span></li>
-                        <li class="material-item">3D Printing Technology<span>[ACTV]</span></li>
-                        <li class="material-item">Hiking & Cycling<span>[IDLE]</span></li>
-                        <li class="material-item">Sketching & Drawing<span>[ACTV]</span></li>
-                        <li class="material-item">Literature & New Knowledge<span>[ACTV]</span></li>
+                    <ul style="list-style: none; font-family: var(--font-mono); font-size: 12px; color: var(--text-dim);">
+                        <li style="margin-bottom: 12px;"><span style="color: white;">[01]</span> Electrical & Electronic Engineering</li>
+                        <li style="margin-bottom: 12px;"><span style="color: white;">[02]</span> Advanced Material Research</li>
+                        <li style="margin-bottom: 12px;"><span style="color: white;">[03]</span> DIY Fabrication & Repair</li>
+                        <li style="margin-bottom: 12px;"><span style="color: white;">[04]</span> Mountain Hiking & Cycling</li>
+                        <li style="margin-bottom: 12px;"><span style="color: white;">[05]</span> Conceptual Drawing & Literature</li>
                     </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="skills" class="detail-section reveal">
-            <div class="section-header">
-                <h2>// Capabilities</h2>
-            </div>
-            <div class="dossier-grid">
-                <div class="tech-box">
-                    <h4>CORE_SKILLS</h4>
-                    <p style="font-family: var(--font-mono); font-size: 14px; color: white;">
-                        > 3D Modeling & Printing<br>
-                        > Prototyping & Technical Testing<br>
-                        > Industrial Sketching & Drawing
-                    </p>
-                </div>
-                <div class="tech-box">
-                    <h4>SOFTWARE_SUITE</h4>
-                    <span class="software-tag">Clip Studio Paint</span>
-                    <span class="software-tag">Photoshop</span>
-                    <span class="software-tag">SolidWorks</span>
-                    <span class="software-tag">Blender</span>
-                    <span class="software-tag">KeyShot</span>
-                    <span class="software-tag">DaVinci Resolve</span>
-                    <span class="software-tag">3D Printing</span>
+                    <div class="tri-color" style="margin-top: 40px;">
+                        <div class="s-red"></div><div class="s-yellow"></div><div class="s-teal"></div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section id="projects" class="detail-section">
             <div class="section-header reveal">
-                <h2>// Prototype_Logs</h2>
+                <h2>// DIY_Prototypes</h2>
             </div>
 
             <div class="tech-box reveal" style="margin-bottom: 40px; padding: 40px;">
-                <h3 style="font-size: 2rem; margin-bottom: 20px; color: white;">PRJ_01: Ballistic Armor System</h3>
                 <div class="dossier-grid">
                     <div>
-                        <p style="color: var(--text-dim); margin-bottom: 20px;">
-                            An investigation into civilian-accessible ballistic protection. This modular system focuses on material layering and kinetic energy dissipation.
+                        <h4 style="color: var(--text-dim);">PROJECT_01 // SELF_INITIATED</h4>
+                        <h3 style="font-size: 2.2rem; margin-bottom: 15px; color: white;">Ballistic Armor System</h3>
+                        <p style="color: var(--text-dim); margin-bottom: 20px; font-size: 0.95rem;">
+                            Born from a deep fascination with <strong>modular system design</strong>. I developed this carrier to investigate the logic of tactical load-bearing systems (MOLLE) and to master the engineering behind heavy-duty sewing and textile fabrication.
                         </p>
-                        <h4>LAYER_STRATIFICATION</h4>
-                        <ul class="material-list">
-                            <li class="material-item">Carrier: <span>1000D Nylon (Flame Retardant)</span></li>
-                            <li class="material-item">Hard Layer: <span>8mm Armor Steel</span></li>
-                            <li class="material-item">Soft Layer: <span>Kevlar / PE (Multi-layer)</span></li>
-                            <li class="material-item">Buffer: <span>10mm PU Trauma Foam</span></li>
-                            <li class="material-item">Extra: <span>Active Water Cooling</span></li>
+                        <ul style="list-style: none; font-family: var(--font-mono); font-size: 11px; color: var(--accent);">
+                            <li style="margin-bottom: 5px;">> GOAL: Master sewing processes for technical gear.</li>
+                            <li style="margin-bottom: 5px;">> FOCUS: MOLLE grid precision & structural modularity.</li>
+                            <li>> STATUS: Prototype V1 Completed.</li>
                         </ul>
                     </div>
-                    <div style="background: #111; border: 1px dashed #333; display: flex; flex-direction:column; align-items: center; justify-content: center; padding: 20px;">
-                        <span style="font-family: var(--font-mono); font-size: 10px; color: #444;">[ SCAN_REF: image_deb4a8 ]</span>
-                        <p style="font-size: 12px; color: var(--accent); margin-top: 10px; text-align:center;">
-                            MOLLE system for quick-attach modularity.
-                        </p>
+                    <div style="background: rgba(0,0,0,0.4); border: 1px dashed #333; display: flex; align-items: center; justify-content: center; padding: 20px; font-family: var(--font-mono); font-size: 10px; color: #444; text-align: center;">
+                        [ TECHNICAL_SCHEMATIC_VIEW ]<br>MODULAR_ATTACHMENT_SYSTEM
                     </div>
                 </div>
             </div>
 
             <div class="dossier-grid">
                 <div class="tech-box reveal">
-                    <h4>PRJ_02</h4>
+                    <h4>DIY_PRJ_02</h4>
                     <h3>Light Scattering Deck</h3>
-                    <p style="font-size: 13px; color: var(--text-dim); margin-top: 10px;">Arduino-integrated 360° motor deck for surface reflectivity measurements.</p>
+                    <p style="font-size: 13px; color: var(--text-dim); margin-top: 10px;">An automated platform integrating Arduino and stepper motors to measure material reflectivity.</p>
                 </div>
                 <div class="tech-box reveal">
-                    <h4>PRJ_03</h4>
-                    <h3>Negative Pressure Booth</h3>
-                    <p style="font-size: 13px; color: var(--text-dim); margin-top: 10px;">Industrial blower system with dual HEPA/Carbon filtration for model finishing.</p>
+                    <h4>DIY_PRJ_03</h4>
+                    <h3>Spray-Booth System</h3>
+                    <p style="font-size: 13px; color: var(--text-dim); margin-top: 10px;">Self-built negative pressure workspace with HEPA filtration for precision model painting.</p>
                 </div>
+            </div>
+        </section>
+
+        <section id="contact" class="detail-section reveal">
+            <div style="background: rgba(15,15,15,0.8); border: 1px solid var(--accent); padding: 80px; text-align: center; backdrop-filter: blur(10px);">
+                <h4 style="font-family: var(--font-mono); color: var(--accent); margin-bottom: 10px;">UPLINK_READY</h4>
+                <h2 style="font-size: 3rem;">1234567@hb.nl</h2>
+                <p style="font-family: var(--font-mono); color: var(--text-dim); margin-top: 10px;">ROTTERDAM // NETHERLANDS</p>
             </div>
         </section>
 
@@ -268,11 +265,11 @@
     </div>
 
     <script>
-        // --- INTERACTIVE BACKGROUND LOGIC ---
+        // --- INTERACTIVE BACKGROUND LOGIC (SUBTLE) ---
         const canvas = document.getElementById('canvas-bg');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        const mouse = { x: null, y: null, radius: 150 };
+        const mouse = { x: null, y: null, radius: 100 };
 
         window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
 
@@ -280,13 +277,13 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             particles = [];
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 80; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5,
-                    size: 2
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.3,
+                    size: 1.5
                 });
             }
         }
@@ -298,23 +295,21 @@
                 if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
                 if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
-                // Mouse interaction
                 let dx = mouse.x - p.x;
                 let dy = mouse.y - p.y;
                 let distance = Math.sqrt(dx*dx + dy*dy);
                 if (distance < mouse.radius) {
-                    p.x -= dx / 20; p.y -= dy / 20;
+                    p.x -= dx / 50; p.y -= dy / 50; // Subtle magnetic repulsion
                 }
 
-                ctx.fillStyle = 'rgba(255, 95, 31, 0.3)';
+                ctx.fillStyle = 'rgba(255, 95, 31, 0.2)';
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
 
-                // Draw lines (The Web)
                 particles.forEach(p2 => {
                     let dx2 = p.x - p2.x; let dy2 = p.y - p2.y;
                     let dist2 = Math.sqrt(dx2*dx2 + dy2*dy2);
-                    if (dist2 < 120) {
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist2/120})`;
+                    if (dist2 < 150) {
+                        ctx.strokeStyle = `rgba(100, 100, 100, ${0.15 - dist2/1500})`;
                         ctx.lineWidth = 0.5;
                         ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
                     }
@@ -326,12 +321,33 @@
         init(); animate();
         window.addEventListener('resize', init);
 
+        // --- TERMINAL TYPING EFFECT ---
+        const terminal = document.getElementById('terminal-content');
+        const logs = [
+            "> INITIALIZING_MISSION_CONTROL...",
+            "> AUTHENTICATING_USER: R_WANG",
+            "> CONNECTION_ESTABLISHED",
+            "> DIRECTORY: /PROJECTS/DIY_MODULAR",
+            "> SCANNING_FOR_PROTOTYPES...",
+            "> SYSTEM_STATUS: NOMINAL",
+            "> READY."
+        ];
+        let line = 0;
+        function typeLog() {
+            if (line < logs.length) {
+                const p = document.createElement('div');
+                p.textContent = logs[line];
+                terminal.insertBefore(p, terminal.querySelector('.cursor'));
+                line++;
+                setTimeout(typeLog, 800);
+            }
+        }
+        typeLog();
+
         // --- REVEAL LOGIC ---
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => entry.target.classList.add('active'), i * 100);
-                }
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
