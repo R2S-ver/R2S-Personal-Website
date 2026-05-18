@@ -3,5 +3,5 @@ My personal website hosted here
 
 ---
 
-https://r2s-ver.github.io/R2S-Personal-Website/ <br>
-Test run website: https://www.runoob.com/runcode
+## [Website](https://r2s-ver.github.io/R2S-Personal-Website/) <br>
+## [Test run before pushing](https://www.runoob.com/runcode)  <br>
