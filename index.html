@@ -7,244 +7,302 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0d0d0d;
-            --panel: #1a1a1a;
-            --accent-orange: #ef7d25;
+            --bg: #0a0a0a;
+            --panel: #141414;
+            --accent: #ff5f1f; /* 航天橙 */
+            --text: #e0e0e0;
+            --text-dim: #666;
+            --border: #222;
             --stripe-red: #9a2b22;
             --stripe-yellow: #e49e49;
             --stripe-teal: #6db0a3;
-            --text-main: #e0e0e0;
-            --text-dim: #888;
             --font-main: 'Futura', 'Space Grotesk', sans-serif;
             --font-mono: 'Space Mono', monospace;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
             background-color: var(--bg);
-            color: var(--text-main);
+            color: var(--text);
             font-family: var(--font-main);
             overflow-x: hidden;
-            /* 扫描线背景 */
-            background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                              linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            background-size: 100% 4px, 3px 100%;
+            line-height: 1.6;
         }
 
-        /* 顶部进度条 - Apple风格 */
-        #scroll-progress {
-            position: fixed; top: 0; left: 0; height: 4px; background: var(--accent-orange);
-            width: 0%; z-index: 1000; transition: width 0.1s ease-out;
+        /* --- 动态背景层 --- */
+        .bg-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+        .scanline {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255, 95, 31, 0.03) 50%, transparent);
+            background-size: 100% 8px;
+            animation: scan 10s linear infinite;
+            z-index: -1; pointer-events: none;
+        }
+        @keyframes scan { from { transform: translateY(-100%); } to { transform: translateY(100%); } }
+
+        /* --- 核心动画 (Apple Breathing Effect) --- */
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(30px) scale(0.98); 
+            transition: all 1s cubic-bezier(0.2, 1, 0.3, 1); 
+        }
+        .reveal.active { 
+            opacity: 1; 
+            transform: translateY(0) scale(1); 
         }
 
-        /* 装饰性经纬度刻度 */
-        .deco-border {
-            position: fixed; border: 1px solid rgba(255,255,255,0.1);
-            z-index: 100; pointer-events: none;
+        /* --- 导航 --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; background: rgba(10,10,10,0.8); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
         }
-        .top-left { top: 20px; left: 20px; padding: 5px; font-family: var(--font-mono); font-size: 10px; color: var(--stripe-teal);}
+        .logo { font-family: var(--font-mono); font-weight: 700; color: var(--accent); letter-spacing: 2px; }
 
-        /* 布局容器 */
-        .container { max-width: 1300px; margin: 0 auto; padding: 80px 20px; }
+        /* --- 容器 --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* --- Hero Section --- */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            position: relative;
-        }
-        .hero-id { font-family: var(--font-mono); color: var(--accent-orange); font-size: 14px; letter-spacing: 4px; margin-bottom: 10px;}
-        .hero h1 { 
-            font-size: clamp(3rem, 10vw, 8rem); 
-            font-weight: 700; line-height: 0.9; text-transform: uppercase; margin-bottom: 20px;
-        }
-        .hero-stripes { display: flex; gap: 5px; margin-bottom: 30px; }
-        .hero-stripe { width: 60px; height: 8px; border-radius: 2px; }
-
-        /* --- Bento Grid 系统 --- */
+        /* --- Hero --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+        .hero-tag { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 10px; }
+        .hero h1 { font-size: clamp(3rem, 8vw, 6rem); line-height: 1; text-transform: uppercase; margin-bottom: 20px; }
+        
+        /* --- Bento Hub --- */
         .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: 280px;
-            gap: 20px;
+            display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 240px; gap: 15px; margin-bottom: 100px;
         }
-
         .bento-item {
-            background: var(--panel);
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            background: var(--panel); border: 1px solid var(--border); padding: 25px;
+            text-decoration: none; color: inherit; position: relative;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; justify-content: space-between;
         }
-
-        /* 悬浮动效：外发光和边框 */
-        .bento-item:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent-orange);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(239, 125, 37, 0.2);
+        .bento-item:hover { 
+            border-color: var(--accent); background: #1a1a1a; transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
+        .bento-item .num { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); }
+        .bento-item h3 { font-size: 1.2rem; text-transform: uppercase; margin-top: 10px; }
+        .bento-item .arrow { position: absolute; right: 20px; bottom: 20px; color: var(--accent); font-size: 20px; }
 
-        .bento-item h2 { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; z-index: 2; }
-        .bento-item .tag { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); }
-
-        /* 特殊尺寸 */
         .large { grid-column: span 2; grid-row: span 2; }
         .wide { grid-column: span 2; }
 
-        /* 背景图标/图片占位 */
-        .bento-bg-icon {
-            position: absolute; right: -20px; bottom: -20px; font-size: 12rem;
-            opacity: 0.03; font-weight: 900; pointer-events: none;
+        /* --- Content Sections --- */
+        section.detail-section { padding: 100px 0; border-top: 1px solid var(--border); }
+        .section-header { margin-bottom: 50px; }
+        .section-header h2 { font-size: 3rem; text-transform: uppercase; color: var(--accent); }
+        
+        /* --- 项目卡片样式 --- */
+        .project-card {
+            background: var(--panel); border-left: 4px solid var(--accent); padding: 40px; margin-bottom: 40px;
         }
+        .project-meta { display: flex; gap: 20px; margin-bottom: 20px; font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); }
+        .project-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; }
+        .material-list { background: #000; padding: 20px; border: 1px solid #333; margin-top: 20px; }
+        .material-list h4 { color: var(--accent); margin-bottom: 10px; font-size: 12px; font-family: var(--font-mono); }
+        .material-list ul { list-style: none; font-size: 13px; color: #aaa; }
 
-        /* --- 动画类 (Apple Scroll Reveal) --- */
-        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        /* --- Footer/Contact --- */
+        footer { padding: 60px 0; text-align: center; font-family: var(--font-mono); color: var(--text-dim); font-size: 11px; }
 
-        /* --- 按钮样式 --- */
-        .btn-nasa {
-            display: inline-block; padding: 15px 30px; border: 1px solid var(--accent-orange);
-            color: var(--accent-orange); text-decoration: none; font-family: var(--font-mono);
-            font-size: 13px; text-transform: uppercase; transition: 0.3s;
-            margin-top: 20px; background: transparent;
-        }
-        .btn-nasa:hover { background: var(--accent-orange); color: white; box-shadow: 0 0 20px var(--accent-orange); }
-
-        /* 分割线三色条 */
-        .divider-stripes { height: 4px; width: 100%; display: flex; margin: 40px 0; }
-
-        /* 联系方式模块 */
-        .contact-grid { display: flex; gap: 40px; margin-top: 20px; flex-wrap: wrap;}
-        .contact-link { color: var(--text-main); text-decoration: none; font-family: var(--font-mono); border-bottom: 1px solid #444; padding-bottom: 5px; transition: 0.3s;}
-        .contact-link:hover { color: var(--stripe-yellow); border-color: var(--stripe-yellow); }
+        /* 三色装饰条 */
+        .stripes-ui { display: flex; height: 4px; width: 80px; gap: 4px; margin-top: 15px;}
+        .s-1 { background: var(--stripe-red); flex: 1; }
+        .s-2 { background: var(--stripe-yellow); flex: 1; }
+        .s-3 { background: var(--stripe-teal); flex: 1; }
 
     </style>
 </head>
 <body>
 
-    <div id="scroll-progress"></div>
-    <div class="deco-border top-left">SYSTEM_STATUS: ACTIVE<br>LOG_0518: ESTABLISHED</div>
+    <div class="bg-overlay"></div>
+    <div class="scanline"></div>
+
+    <nav>
+        <div class="logo">BJ-M.CTRL // 2026</div>
+        <div class="nav-links" style="font-family: var(--font-mono); font-size: 11px;">
+            SYS_READY: <span style="color: var(--stripe-teal)">● ONLINE</span>
+        </div>
+    </nav>
 
     <div class="container">
         
-        <header class="hero">
-            <div class="hero-id reveal">BOB JANNES // ARCHIVE 2026</div>
-            <h1 class="reveal">Industrial<br><span style="color:var(--accent-orange)">Designer</span></h1>
-            <div class="hero-stripes reveal">
-                <div class="hero-stripe" style="background:var(--stripe-red)"></div>
-                <div class="hero-stripe" style="background:var(--stripe-yellow)"></div>
-                <div class="hero-stripe" style="background:var(--stripe-teal)"></div>
+        <header class="hero reveal">
+            <div class="hero-tag">COORDINATES: 51.9225° N, 4.4792° E</div>
+            <h1>Functional<br>Aesthetics.</h1>
+            <div class="stripes-ui">
+                <div class="s-1"></div><div class="s-2"></div><div class="s-3"></div>
             </div>
-            <p class="reveal" style="max-width: 500px; line-height: 1.6; color: var(--text-dim);">
-                探索工业设计与艺术的边界。在这里，功能性不是枷锁，而是创造力的操作系统。
-            </p>
-            <a href="#projects" class="btn-nasa reveal">进入控制台</a>
         </header>
 
-        <section id="projects" class="bento-grid">
-            
-            <div class="bento-item large reveal">
+        <div class="bento-grid">
+            <a href="#projects" class="bento-item large reveal">
+                <span class="num">DATA_SET_01</span>
                 <div>
-                    <span class="tag">MODULE_01</span>
-                    <h2>DIY & Industrial<br>Projects</h2>
+                    <h3>DIY & Industrial<br>Projects</h3>
+                    <p style="color: var(--text-dim); font-size: 13px; margin-top: 10px;">Engineering solutions for extreme environments.</p>
                 </div>
-                <p style="color:var(--text-dim); font-size: 0.9rem;">从电钻原型到机械结构开发。点击查看完整 PPT 作品集。</p>
-                <a href="#" class="btn-nasa" style="width: fit-content;">Open File</a>
-                <div class="bento-bg-icon">⚙️</div>
-            </div>
+                <div class="arrow">↘</div>
+            </a>
+            <a href="#about" class="bento-item reveal">
+                <span class="num">DATA_SET_02</span>
+                <h3>Biography</h3>
+                <div class="arrow">↘</div>
+            </a>
+            <a href="#contact" class="bento-item reveal">
+                <span class="num">DATA_SET_03</span>
+                <h3>Contact</h3>
+                <div class="arrow">↘</div>
+            </a>
+            <a href="https://your-issuu-link.com" target="_blank" class="bento-item wide reveal">
+                <span class="num">ARCHIVE_FULL</span>
+                <h3>View Full Portfolio (PPT)</h3>
+                <div class="arrow">↗</div>
+            </a>
+        </div>
 
-            <div class="bento-item wide reveal">
-                <div>
-                    <span class="tag">MODULE_02</span>
-                    <h2>Art & Concept</h2>
-                </div>
-                <p style="color:var(--text-dim); font-size: 0.9rem;">插画、视觉概念与 3D 渲染。</p>
-                <div class="bento-bg-icon">🎨</div>
+        <section id="about" class="detail-section reveal">
+            <div class="section-header">
+                <h2>// Personnel_Info</h2>
             </div>
-
-            <div class="bento-item reveal">
+            <div class="project-grid">
                 <div>
-                    <span class="tag">MODULE_03</span>
-                    <h2>Biography</h2>
+                    <p>Bob Jannes, 工业设计专业，专注于**NASAPunk**与**复古未来主义**的功能性转化。</p>
+                    <p style="margin-top: 20px; color: var(--text-dim);">
+                        我的创作核心在于“结构透明化”。我不喜欢隐藏产品的运作逻辑，相反，我通过构成主义的排版将机械结构转化为视觉语言。每一个螺丝、每一条电线都应是设计的一部分。
+                    </p>
                 </div>
-                <p style="font-size: 0.8rem; line-height: 1.4;">生于创意，长于工程。致力于将 NASA 朋克美学注入日常产品。</p>
-                <div class="bento-bg-icon">👤</div>
-            </div>
-
-            <div class="bento-item reveal">
-                <div>
-                    <span class="tag">MODULE_04</span>
-                    <h2>Tech Stack</h2>
-                </div>
-                <div style="font-family: var(--font-mono); font-size: 11px;">
-                    > SOLIDWORKS<br>
-                    > BLENDER<br>
-                    > PHOTOSHOP<br>
-                    > 3D PRINTING
-                </div>
-            </div>
-
-            <div class="bento-item wide reveal">
-                <div>
-                    <span class="tag">MODULE_05</span>
-                    <h2>Communication</h2>
-                </div>
-                <div class="contact-grid">
-                    <a href="mailto:1023456@hh.nl" class="contact-link">EMAIL</a>
-                    <a href="#" class="contact-link">LINKEDIN</a>
-                    <a href="#" class="contact-link">INSTAGRAM</a>
-                </div>
-                <div class="divider-stripes">
-                    <div style="flex:1; background:var(--stripe-red)"></div>
-                    <div style="flex:1; background:var(--stripe-yellow)"></div>
-                    <div style="flex:1; background:var(--stripe-teal)"></div>
+                <div style="border: 1px solid var(--border); padding: 20px; font-family: var(--font-mono); font-size: 13px;">
+                    <span style="color:var(--accent)">> LOCATION:</span> Rotterdam<br>
+                    <span style="color:var(--accent)">> STATUS:</span> Designer / Maker<br>
+                    <span style="color:var(--accent)">> INTERESTS:</span> Bulletproof materials, Aero-Engineering, Minimalist UI
                 </div>
             </div>
-
-            <div class="bento-item reveal">
-                <div>
-                    <span class="tag">STATUS</span>
-                    <h2 style="color: var(--stripe-teal);">Available</h2>
-                </div>
-                <p style="font-size: 10px; font-family: var(--font-mono);">READY FOR NEW MISSIONS.</p>
-            </div>
-
         </section>
 
-        <footer style="margin-top: 100px; text-align: center; font-family: var(--font-mono); font-size: 12px; color: #444;">
-            &copy; 2026 BOB JANNES. DESIGNED UNDER ZERO GRAVITY.
+        <section id="projects" class="detail-section">
+            <div class="section-header reveal">
+                <h2>// Operational_Units</h2>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-meta"><span>PROJECT_01</span> | <span>2025</span></div>
+                <div class="project-grid">
+                    <div>
+                        <h3 style="font-size: 1.8rem; margin-bottom: 15px;">自制防弹衣 / Ballistic Armor Study</h3>
+                        <p>探索民用材料在极端冲击下的防护极限。通过多层复合材料叠加，研究动力学能耗散。重点在于平衡佩戴舒适度与防护等级。</p>
+                        <div class="material-list">
+                            <h4>MATERIAL_STUDY</h4>
+                            <ul>
+                                <li>- 高分子聚乙烯纤维 (UHMWPE)</li>
+                                <li>- 芳纶编织物 (Kevlar 29)</li>
+                                <li>- 缓冲泡沫层 (EVA High-Density)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="background: #111; border: 1px dashed #444; display: flex; align-items: center; justify-content: center; color: #444;">
+                        [ IMAGE_SCAN_01 ]
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-meta"><span>PROJECT_02</span> | <span>2025</span></div>
+                <div class="project-grid">
+                    <div>
+                        <h3 style="font-size: 1.8rem; margin-bottom: 15px;">光散射测试平台 / Light Scattering Deck</h3>
+                        <p>用于精密测量材料表面反射率与散射路径。采用铝挤型材结构，集成 Arduino 控制的步进电机，实现 360 度自动化扫描记录。</p>
+                        <div class="material-list">
+                            <h4>TECH_STACK</h4>
+                            <ul>
+                                <li>- 2020 Aluminum Extrusion</li>
+                                <li>- Nema 17 Stepper / Arduino Uno</li>
+                                <li>- Photoresistor Array / Darkbox Enclosure</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="background: #111; border: 1px dashed #444; display: flex; align-items: center; justify-content: center; color: #444;">
+                        [ IMAGE_SCAN_02 ]
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-meta"><span>PROJECT_03</span> | <span>2024</span></div>
+                <div class="project-grid">
+                    <div>
+                        <h3 style="font-size: 1.8rem; margin-bottom: 15px;">负压喷涂箱 / Spray-Booth V2</h3>
+                        <p>解决室内模型喷涂的粉尘与异味问题。自制高效负压气旋系统，配合 HEPA 与活性炭双层过滤，专为小空间工作室设计。</p>
+                        <div class="material-list">
+                            <h4>SYSTEM_SPECS</h4>
+                            <ul>
+                                <li>- 600 CFM Industrial Blower</li>
+                                <li>- HEPA H13 Filter / Carbon Sheet</li>
+                                <li>- LED High-CRI Lighting Strip</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="background: #111; border: 1px dashed #444; display: flex; align-items: center; justify-content: center; color: #444;">
+                        [ IMAGE_SCAN_03 ]
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="detail-section reveal">
+            <div class="section-header">
+                <h2>// Uplink_Contact</h2>
+            </div>
+            <div style="text-align: center; border: 1px solid var(--accent); padding: 50px;">
+                <p style="font-family: var(--font-mono); color: var(--accent); margin-bottom: 20px;">ESTABLISHING CONNECTION...</p>
+                <h3 style="font-size: 2rem;">1023456@hh.nl</h3>
+                <p style="margin-top: 10px; color: var(--text-dim);">Rotterdam, Netherlands</p>
+                <div class="stripes-ui" style="margin: 30px auto 0;">
+                    <div class="s-1"></div><div class="s-2"></div><div class="s-3"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            BOB JANNES // IND. ARCHIVE // NO RIGHTS RESERVED // 2026
         </footer>
     </div>
 
     <script>
-        // Apple 风格滚动监听
-        const observerOptions = { threshold: 0.1 };
+        // 增强版呼吸感入场动画
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
+                    // 稍微延迟一点点增加节奏感
+                    setTimeout(() => {
+                        entry.target.classList.add('active');
+                    }, 100);
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // 顶部进度条
-        window.onscroll = function() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            let scrolled = (winScroll / height) * 100;
-            document.getElementById("scroll-progress").style.width = scrolled + "%";
-        };
+        // 点击 Bento 区块时的平滑滚动增强
+        document.querySelectorAll('.bento-item').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if(href.startsWith('#')) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>
