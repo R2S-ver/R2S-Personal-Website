@@ -1,8 +1,9 @@
-<html lang="en" data-immersive-translate-page-theme="dark"><head>
+<html lang="en" data-immersive-translate-page-theme="dark">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>R2S | PERSONAL WEBSITE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&amp;family=Space+Mono&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #050505;
@@ -108,12 +109,15 @@
         .radar-wrapper {
             margin-top: auto; /* Pushes it to the bottom of the tech-box */
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding-top: 30px;
+            gap: 15px;
         }
         .radar {
-            width: 140px; height: 140px;
+            width: 190px; /* Increased from 140px */
+            height: 190px; /* Increased from 140px */
             border-radius: 50%;
             border: 1px solid rgba(255, 95, 31, 0.3);
             position: relative;
@@ -133,11 +137,11 @@
             animation: scan 4s linear infinite;
         }
         .radar-blip {
-            position: absolute; width: 4px; height: 4px;
+            position: absolute; width: 5px; height: 5px; /* Slightly bigger blip */
             background-color: var(--terminal-green);
             border-radius: 50%;
             top: 35%; left: 65%;
-            box-shadow: 0 0 6px var(--terminal-green);
+            box-shadow: 0 0 8px var(--terminal-green);
             animation: blink 2s infinite;
         }
         @keyframes scan { 100% { transform: rotate(360deg); } }
@@ -170,14 +174,13 @@
             .sub-images { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr; }
         }
     </style>
-<style></style><style></style><style id="LLPlatform"></style></head>
-<body><div id="shadowLL"><link rel="stylesheet" type="text/css" href="chrome-extension://ahdcjjbclkmalpeaikmifkicnneedplj/sciteFont.css"><div id="shadowLL"></div></div>
-
-    <canvas id="neural-canvas" width="1106" height="802"></canvas>
+</head>
+<body>
+    <canvas id="neural-canvas"></canvas>
 
     <nav>
         <div>R2S // PROTOCOL_V5</div>
-        <div>SYS_STATUS: <span style="color:var(--terminal-green)">READY</span> // <span id="clock">03:49:12</span></div>
+        <div>SYS_STATUS: <span style="color:var(--terminal-green)">READY</span> // <span id="clock">00:00:00</span></div>
     </nav>
 
     <div class="container">
@@ -201,8 +204,9 @@
                     &gt; ACCESSING_DIY_FILES...<br>
                     &gt; SCANNING_BALLISTIC_LOGS...<br>
                     &gt; ESTABLISHING_UPLINK...<br>
-                    &gt; SYSTEM_ONLINE.<br>
-                    <div>&gt; INITIALIZING_MISSION_CONTROL...</div><div>&gt; AUTHENTICATING: VISITOR</div><div>&gt; MODULE: INTERFACE_V5</div><div>&gt; STATUS: ALL_SYSTEMS_ONLINE</div><div>&gt; READY FOR DEPLOYMENT</div><span class="cursor"></span>
+                    &gt; SYSTEM_ONLINE.<br><br>
+                    <!-- Duplicated text removed. JS will insert typing effect here -->
+                    <span class="cursor"></span>
                 </div>
             </div>
         </header>
@@ -237,11 +241,15 @@
                     </p>
                     <div class="tech-box">
                         <h4>CORE_CAPABILITIES</h4>
-                        <p style="font-size: 16px; margin-bottom: 25px; line-height: 1.8;">
-                            • <strong>3D Modeling &amp; Printing</strong>: High-fidelity prototyping with SolidWorks and Blender.<br>
-                            • <strong>Technical Prototyping</strong>: Material testing, load-bearing study, and mechanical assembly.<br>
-                            • <strong>Industrial Sketching</strong>: From Clip Studio ideation to technical blueprinting.
+                        <p style="font-size: 16px; margin-bottom: 15px; line-height: 1.8;">
+                            • <strong>3D Modeling &amp; Printing</strong><br>
+                            • <strong>Prototyping &amp; Testing</strong><br>
+                            • <strong>Sketching &amp; Drawing</strong>
                         </p>
+                        <p style="font-size: 14px; color: var(--text-dim); margin-bottom: 25px; line-height: 1.6;">
+                            <em>End-to-End Execution:</em> Managing the full product lifecycle from user research, initial concept design, and prototype testing to finalizing material selection and sourcing.
+                        </p>
+                        
                         <h4>SOFTWARE_SUITE</h4>
                         <div class="software-list">
                             <span class="software-tag">SolidWorks</span>
@@ -263,6 +271,11 @@
                     </ul>
                     
                     <div class="radar-wrapper">
+                        <!-- Added UI filler above the radar to balance the tech box -->
+                        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); width: 100%; border-bottom: 1px dashed var(--border); padding-bottom: 5px; text-align: center; letter-spacing: 2px;">
+                            [ SENSOR_ARRAY_ACTIVE ]
+                        </div>
+                        
                         <div class="radar">
                             <div class="radar-sweep"></div>
                             <div class="radar-blip"></div>
@@ -454,5 +467,5 @@
         }
         setInterval(updateClock, 1000); updateClock();
     </script>
-
-<div id="eagle-drag-images" style="position: fixed; top: -100000px;"></div></body><div id="immersive-translate-popup" style="all: initial"></div></html>
+</body>
+</html>
