@@ -144,12 +144,17 @@
             margin-top: -80px; margin-bottom: 100px; position: relative; z-index: 10;
         }
         .nav-card {
-            padding: 35px 20px; text-align: center; text-decoration: none; color: #fff;
-            font-family: var(--font-mono); font-size: 13px; text-transform: uppercase;
-            transition: all 0.2s ease-out; display: flex; flex-direction: column; gap: 12px;
+            padding: 40px 20px; text-align: center; text-decoration: none; color: #fff;
+            font-family: var(--font-mono); font-size: 18px; text-transform: uppercase;
+            transition: all 0.2s ease-out; display: flex; flex-direction: column; gap: 16px;
             border-top: 3px solid transparent; font-weight: bold;
         }
-        .nav-card span:first-child { color: var(--accent); font-weight: 900; font-size: 26px; line-height: 1; }
+        .nav-card span:first-child { 
+            color: #ffffff; font-weight: 900; font-size: 42px; line-height: 1; 
+        }
+        .nav-card span:nth-child(2) {
+            color: #ffffff; font-size: 18px; letter-spacing: 1px;
+        }
         .nav-card:hover {
             border-top: 3px solid var(--accent);
             background: #141418;
@@ -179,17 +184,23 @@
         .radar {
             width: 190px; height: 190px; border-radius: 50%;
             border: 2px solid var(--accent); position: relative;
-            background: 
-                linear-gradient(90deg, transparent 49%, var(--accent) 49%, var(--accent) 51%, transparent 51%),
-                linear-gradient(0deg, transparent 49%, var(--accent) 49%, var(--accent) 51%, transparent 51%),
-                radial-gradient(circle, transparent 32%, rgba(255, 95, 31, 0.65) 33%, transparent 34%),
-                radial-gradient(circle, transparent 65%, rgba(255, 95, 31, 0.65) 66%, transparent 67%);
+            background: radial-gradient(circle, transparent 32%, rgba(255, 95, 31, 0.65) 33%, transparent 34%),
+                        radial-gradient(circle, transparent 65%, rgba(255, 95, 31, 0.65) 66%, transparent 67%);
             overflow: hidden; box-shadow: inset 0 0 30px rgba(255, 95, 31, 0.3);
+        }
+        .radar-x, .radar-y {
+            position: absolute; background: rgba(255,255,255,0.25);
+        }
+        .radar-x {
+            left: 0; top: 50%; width: 100%; height: 1px; transform: translateY(-50%);
+        }
+        .radar-y {
+            top: 0; left: 50%; width: 1px; height: 100%; transform: translateX(-50%);
         }
         .radar-sweep {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: conic-gradient(from 0deg, transparent 3%, rgba(255, 95, 31, 0.9) 3%, rgba(255, 95, 31, 0.9) 8%, transparent 8%);
-            border-radius: 50%; animation: scan 3s linear infinite;
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(255, 255, 255, 0.5) 12deg, transparent 45deg);
+            border-radius: 50%; animation: scan 2.2s linear infinite;
             z-index: 0;
         }
         .radar-blip {
@@ -359,6 +370,8 @@
                         </div>
                         
                         <div class="radar" id="radar">
+                            <div class="radar-x"></div>
+                            <div class="radar-y"></div>
                             <div class="radar-sweep"></div>
                             <!-- 动态生成绿点将插入此处 -->
                         </div>
@@ -582,18 +595,15 @@
         function spawnRadarBlips() {
             const radar = document.getElementById('radar');
             if (!radar) return;
-            // 清除已存在的blip（避免重复生成）
             radar.querySelectorAll('.radar-blip').forEach(el => el.remove());
-            const count = 8; // 生成8个随机绿点
+            const count = 8; 
             for (let i = 0; i < count; i++) {
                 const blip = document.createElement('div');
                 blip.className = 'radar-blip';
-                // 随机位置 (避开边缘)
-                const top = 15 + Math.random() * 70; // 15% 到 85%
+                const top = 15 + Math.random() * 70; 
                 const left = 15 + Math.random() * 70;
                 blip.style.top = top + '%';
                 blip.style.left = left + '%';
-                // 随机延迟和持续时间，使闪烁不同步
                 blip.style.animationDelay = Math.random() * 2 + 's';
                 blip.style.animationDuration = (0.8 + Math.random() * 1.5) + 's';
                 radar.appendChild(blip);
