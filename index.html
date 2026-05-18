@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bob Jannes - Industrial Design Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Stardos+Stencil:wght@400;700&family=Ubuntu:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #f1f0e8; /* 米白/浅灰底色 */
-            --dark-gray: #3a3934; /* 深灰卡片色 */
+            --bg-color: #f1f0e8; 
+            --dark-gray: #3a3934; 
             --text-dark: #222222;
-            --accent-orange: #ef7d25; /* 强调橙色 */
-            --accent-green: #bbc97c; /* 标题浅绿 */
+            --accent-orange: #ef7d25; 
+            --accent-green: #bbc97c; 
             --stripe-red: #9a2b22;
             --stripe-yellow: #e49e49;
             --stripe-teal: #6db0a3;
@@ -21,12 +21,13 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Ubuntu', sans-serif;
+            /* 优先使用 Futura，没有则降级到 Jost */
+            font-family: 'Futura', 'Jost', 'Trebuchet MS', Arial, sans-serif;
             color: var(--text-dark);
-            /* 模拟PPT背景的细微网点纹理 */
             background-color: var(--bg-color);
             background-image: radial-gradient(#d3d3d3 1px, transparent 1px);
             background-size: 8px 8px;
+            overflow-x: hidden; /* 防止动画引发横向滚动条 */
         }
 
         .container {
@@ -35,9 +36,37 @@
             padding: 40px 20px;
         }
 
-        /* 统一标题字体 */
-        .stencil-font { font-family: 'Stardos Stencil', cursive; }
-        .oswald-font { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+        /* 统一使用 Futura 变体风格 */
+        .title-font { font-weight: 900; text-transform: uppercase; }
+        .sub-font { font-weight: 500; text-transform: uppercase; }
+
+        /* ==================== 动画定义 (Keyframes) ==================== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes growDown {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+
+        @keyframes growRight {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+
+        /* 滚动触发基础类 */
+        .reveal {
+            opacity: 0; /* 初始隐藏，由JS配合动画类展现 */
+        }
+        .reveal.active {
+            animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        /* 为多个元素设置动画延迟，形成错落有致的感觉 */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.3s; }
+        .delay-3 { animation-delay: 0.5s; }
 
         /* ==================== 封面部分 ==================== */
         .hero {
@@ -48,21 +77,22 @@
             align-items: center;
             text-align: center;
             position: relative;
-            background: rgba(241, 240, 232, 0.7); /* 方便后续你在下面垫一张半透明的建筑背景图 */
+            background: rgba(241, 240, 232, 0.7); 
+            animation: fadeInUp 1s ease-out forwards; /* 封面首屏直接播放动画 */
         }
-        .hero h2 { color: var(--accent-orange); margin-bottom: 0; font-size: 1.5rem; }
+        .hero h2 { color: var(--accent-orange); margin-bottom: 0; font-size: 1.5rem; letter-spacing: 2px;}
         .hero h1 { 
             font-size: 6rem; 
             margin: -10px 0 10px 0; 
             letter-spacing: 5px; 
-            text-transform: uppercase;
         }
-        .hero .year { color: var(--accent-orange); font-size: 2.5rem; position: absolute; right: 20%; top: 55%; }
+        .hero .year { color: var(--accent-orange); font-size: 2.5rem; position: absolute; right: 20%; top: 55%; font-weight: 700;}
         .hero .name { 
             font-size: 2.5rem; 
             border-bottom: 5px solid var(--text-dark); 
             padding-bottom: 5px;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            font-weight: 900;
         }
 
         /* ==================== 关于我 ==================== */
@@ -70,9 +100,10 @@
             display: flex;
             margin-top: 100px;
             position: relative;
-            padding-left: 60px; /* 给左侧彩色条纹留空间 */
+            padding-left: 60px; 
         }
-        /* 左侧红黄绿条纹 */
+        
+        /* 动态三色条纹 */
         .about-stripes {
             position: absolute;
             left: 0;
@@ -81,10 +112,23 @@
             width: 45px;
             display: flex;
         }
-        .stripe { flex: 1; height: 100%; }
-        .stripe.red { background-color: var(--stripe-red); }
-        .stripe.yellow { background-color: var(--stripe-yellow); }
-        .stripe.teal { background-color: var(--stripe-teal); }
+        .stripe { 
+            flex: 1; 
+            height: 100%; 
+            transform-origin: top; 
+            transform: scaleY(0); /* 初始状态压缩为0 */
+            transition: filter 0.3s ease, flex 0.3s ease; /* 悬浮过渡动画 */
+        }
+        .stripe:hover {
+            filter: brightness(1.2);
+            flex: 1.5; /* 鼠标放上去条纹变宽 */
+            cursor: pointer;
+        }
+        
+        /* 当父级变为 active 时，触发条纹向下生长 */
+        .about-section.active .stripe.red { animation: growDown 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards; background-color: var(--stripe-red); }
+        .about-section.active .stripe.yellow { animation: growDown 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards; background-color: var(--stripe-yellow); }
+        .about-section.active .stripe.teal { animation: growDown 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards; background-color: var(--stripe-teal); }
 
         .about-col-left { flex: 1; padding-right: 40px; }
         .about-col-right { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
@@ -98,13 +142,13 @@
             margin-bottom: 20px;
         }
 
-        .section-title { font-size: 2.5rem; margin-bottom: 10px; }
+        .section-title { font-size: 2.5rem; margin-bottom: 10px; font-weight: 900; }
         .title-green { color: var(--accent-green); text-shadow: 1px 1px 0 #000; }
         .title-orange { color: var(--accent-orange); }
 
-        .about-text { font-size: 0.95rem; line-height: 1.6; border-left: 2px solid #ccc; padding-left: 15px; }
+        .about-text { font-size: 1rem; line-height: 1.6; border-left: 3px solid var(--text-dark); padding-left: 15px; }
         
-        .list-group p, .list-group ul { margin: 5px 0 15px 0; font-size: 0.9rem; line-height: 1.5; font-weight: bold;}
+        .list-group p, .list-group ul { margin: 5px 0 15px 0; font-size: 1rem; line-height: 1.5; font-weight: 500;}
         .list-group ul { list-style-type: square; padding-left: 20px; }
         .icons { font-size: 1.5rem; letter-spacing: 10px; }
 
@@ -118,12 +162,19 @@
             position: relative;
             border-bottom: 10px solid var(--stripe-red);
         }
+        /* 横向色条的入场动画 */
         .projects-banner::after {
             content: ""; position: absolute; bottom: -20px; left: 0; width: 100%; height: 10px; background-color: var(--stripe-yellow);
+            transform-origin: left; transform: scaleX(0); transition: transform 0.8s ease;
         }
         .projects-banner::before {
             content: ""; position: absolute; bottom: -30px; left: 0; width: 100%; height: 10px; background-color: var(--stripe-teal);
+            transform-origin: left; transform: scaleX(0); transition: transform 0.8s ease 0.2s;
         }
+        .projects-banner.active::after, .projects-banner.active::before {
+            transform: scaleX(1);
+        }
+
         .projects-banner h1 { font-size: 6rem; margin: 0; letter-spacing: 8px; }
         .projects-banner .dot { color: var(--accent-orange); }
 
@@ -135,9 +186,16 @@
             display: inline-block;
             padding-right: 50px;
             margin-bottom: 30px;
+            position: relative;
         }
+        /* 标题下划线悬浮动画 */
+        .project-header::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 4px; background-color: var(--accent-orange);
+            transition: width 0.4s ease;
+        }
+        .project-header:hover::after { width: 100%; }
 
-        /* 暗色背景容器 (对应PPT深灰色网格区) */
+        /* 暗色背景容器及悬浮互动 */
         .project-dark-box {
             background-color: var(--dark-gray);
             background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
@@ -147,46 +205,32 @@
             padding: 40px;
             border: 2px solid #555;
             margin-bottom: 40px;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .project-dark-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border-color: var(--accent-orange);
         }
 
         /* 概念设计排版 */
-        .concept-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 40px;
-        }
-        .concept-text h3 {
-            color: var(--accent-orange);
-            font-size: 1.8rem;
-            margin-top: 0;
-        }
-        .concept-text p {
-            line-height: 1.6;
-            font-size: 1.1rem;
-        }
-        .text-highlight { color: var(--accent-orange); font-weight: bold; }
+        .concept-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; }
+        .concept-text h3 { color: var(--accent-orange); font-size: 2rem; margin-top: 0; letter-spacing: 1px;}
+        .concept-text p { line-height: 1.6; font-size: 1.1rem; font-weight: 300;}
+        .text-highlight { color: var(--accent-orange); font-weight: 700; }
         
-        /* 图片占位符 */
         .img-placeholder {
-            background-color: #e0e0e0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #666;
-            min-height: 400px;
-            border: 1px dashed #999;
-            width: 100%;
+            background-color: #e0e0e0; display: flex; justify-content: center; align-items: center; color: #666;
+            min-height: 400px; border: 1px dashed #999; width: 100%; transition: transform 0.3s;
         }
+        .img-placeholder:hover { transform: scale(1.02); } /* 图片悬浮微微放大 */
 
         /* 原型排版 */
-        .prototype-grid {
-            display: grid;
-            grid-template-columns: 3fr 1fr;
-            gap: 20px;
-        }
+        .prototype-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 20px; }
         .proto-main { min-height: 500px; }
         .proto-thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .proto-thumb { background-color: #aaa; min-height: 100px; }
+        .proto-thumb { background-color: #aaa; min-height: 100px; cursor: pointer; transition: opacity 0.3s;}
+        .proto-thumb:hover { opacity: 0.7; }
 
         /* 底部彩色色块 */
         .bottom-colors { display: flex; justify-content: flex-end; width: 100%; gap: 10px; margin-top: 10px; }
@@ -196,43 +240,45 @@
 <body>
 
     <div class="hero">
-        <h2 class="oswald-font">Industrial Design</h2>
-        <h1 class="stencil-font">Portfolio.</h1>
-        <div class="stencil-font year">2025</div>
-        <div class="stencil-font name">BoB JANNES</div>
+        <h2 class="sub-font">Industrial Design</h2>
+        <h1 class="title-font">Portfolio.</h1>
+        <div class="title-font year">2025</div>
+        <div class="sub-font name">BoB JANNES</div>
     </div>
 
     <div class="container">
         
-        <section class="about-section">
+        <section class="about-section scroll-trigger">
             <div class="about-stripes">
                 <div class="stripe red"></div>
                 <div class="stripe yellow"></div>
                 <div class="stripe teal"></div>
             </div>
             
-            <div class="about-col-left">
-                <div class="name-tag oswald-font">Bob Jannes</div>
-                <h2 class="stencil-font section-title title-green">About me</h2>
+            <div class="about-col-left reveal delay-1">
+                <div class="name-tag sub-font">Bob Jannes</div>
+                <h2 class="title-font section-title title-green">About me</h2>
                 <div class="about-text">
                     <p>"My creative journey began when I connected with an online artist, which sparked my passion for design. I explored character, prop and concept design; later learned 3D modeling and printing to turn my ideas into reality.</p>
                     <p>This process of bringing concepts to life continues to inspire me to create practical and innovative solutions."</p>
                 </div>
                 
-                <h2 class="stencil-font section-title title-green" style="margin-top: 30px;">Contact</h2>
+                <h2 class="title-font section-title title-green" style="margin-top: 30px;">Contact</h2>
                 <div class="list-group">
                     <p>Rotterdam<br>Netherland<br>1023456@hh.nl<br>+31 6 12345678</p>
                 </div>
             </div>
 
-            <div class="about-col-right">
+            <div class="about-col-right reveal delay-2">
                 <div class="list-group">
-                    <h2 class="stencil-font section-title title-orange">Education</h2>
+                    <h2 class="title-font section-title title-orange">Education</h2>
                     <p>2017 - 2022<br>OSG SCHOOL</p>
                     <p>2023 - NOW<br>Industrial Product Design<br>University of ABC</p>
                 </div>
-                <div></div> <div class="list-group">
-                    <h2 class="stencil-font section-title title-orange">Skills___</h2>
+                <div></div>
+
+                <div class="list-group">
+                    <h2 class="title-font section-title title-orange">Skills___</h2>
                     <ul>
                         <li>3D modeling & printing</li>
                         <li>Prototyping & Testing</li>
@@ -242,7 +288,7 @@
                 </div>
 
                 <div class="list-group">
-                    <h2 class="stencil-font section-title title-orange">Interests</h2>
+                    <h2 class="title-font section-title title-orange">Interests</h2>
                     <ul>
                         <li>Hiking</li>
                         <li>Cycling</li>
@@ -259,51 +305,51 @@
             </div>
         </section>
 
-        <div class="projects-banner">
-            <h1 class="stencil-font">PROJECTS<span class="dot">.</span></h1>
+        <div class="projects-banner scroll-trigger reveal">
+            <h1 class="title-font">PROJECTS<span class="dot">.</span></h1>
         </div>
 
         <section class="project-detail">
-            <h2 class="stencil-font project-header">// Powerdrill</h2>
+            <h2 class="title-font project-header reveal">// Powerdrill</h2>
             
-            <div class="project-dark-box concept-grid">
+            <div class="project-dark-box concept-grid reveal delay-1">
                 <div class="concept-text">
-                    <h3 class="oswald-font">Concept<br><span style="color:white;">Design</span></h3>
+                    <h3 class="title-font">Concept<br><span style="color:white;">Design</span></h3>
                     <p>The CS/PD features a <span class="text-highlight">retro-futuristic design</span> inspired by Teenage Engineering, tailored for users with <span class="text-highlight">mild to moderate rheumatoid arthritis</span>.</p>
                     <p>Its ergonomic grip, built-in flashlight, Type-C rechargeable battery and simple torque adjustment offer comfort and ease for everyday tasks.</p>
                 </div>
                 <div class="img-placeholder">
-                    [ 替换为：电钻渲染图 (带白色底板) ]
+                    [ 渲染图位置 ]
                 </div>
             </div>
 
-            <div class="project-dark-box">
+            <div class="project-dark-box reveal delay-2">
                 <div class="img-placeholder" style="min-height: 500px; background-color: transparent; border-color: #555;">
-                    [ 替换为：带有指示线和文字说明的透明底电钻爆炸图/标注图 ]
+                    [ 结构标注图位置 ]
                 </div>
             </div>
 
-            <div class="project-dark-box">
-                <h3 class="oswald-font" style="text-align:center; color:white; letter-spacing: 2px;">Ergonomic research</h3>
+            <div class="project-dark-box reveal delay-3">
+                <h3 class="title-font" style="text-align:center; color:white; letter-spacing: 2px;">Ergonomic research</h3>
                 <div class="prototype-grid">
                     <div class="img-placeholder proto-main">
-                        [ 替换为：切割板上的泡沫主模型图片 ]
+                        [ 主模型图 ]
                     </div>
                     <div class="proto-thumbs">
-                        <div class="img-placeholder proto-thumb">图1</div>
-                        <div class="img-placeholder proto-thumb">图2</div>
-                        <div class="img-placeholder proto-thumb">图3</div>
-                        <div class="img-placeholder proto-thumb">图4</div>
-                        <div class="img-placeholder proto-thumb">图5</div>
-                        <div class="img-placeholder proto-thumb">图6</div>
-                        <div class="img-placeholder proto-thumb">图7</div>
-                        <div class="img-placeholder proto-thumb">图8</div>
+                        <div class="img-placeholder proto-thumb">1</div>
+                        <div class="img-placeholder proto-thumb">2</div>
+                        <div class="img-placeholder proto-thumb">3</div>
+                        <div class="img-placeholder proto-thumb">4</div>
+                        <div class="img-placeholder proto-thumb">5</div>
+                        <div class="img-placeholder proto-thumb">6</div>
+                        <div class="img-placeholder proto-thumb">7</div>
+                        <div class="img-placeholder proto-thumb">8</div>
                     </div>
                 </div>
             </div>
             
-            <div style="display:flex; justify-content: space-between; align-items: center; font-weight: bold; border-top: 2px solid var(--text-dark); padding-top: 10px;">
-                <span class="oswald-font" style="letter-spacing: 2px;">INDIVIDUAL PROJECT | PROTOTYPE</span>
+            <div class="reveal delay-1" style="display:flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--text-dark); padding-top: 10px; margin-bottom: 60px;">
+                <span class="sub-font" style="letter-spacing: 2px; font-weight: bold;">INDIVIDUAL PROJECT | PROTOTYPE</span>
                 <div class="bottom-colors" style="width: auto;">
                     <div class="b-color" style="background:var(--stripe-red)"></div>
                     <div class="b-color" style="background:var(--stripe-yellow)"></div>
@@ -313,5 +359,31 @@
         </section>
 
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 设置一个交点观察器 (Intersection Observer)
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 // 当元素 15% 进入视口时触发
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 添加 active 类来播放 CSS 动画
+                        entry.target.classList.add('active');
+                        // 触发后停止观察该元素，确保动画只播放一次
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // 监听所有带有 reveal 或 scroll-trigger 类的元素
+            const animatedElements = document.querySelectorAll('.reveal, .scroll-trigger');
+            animatedElements.forEach(el => observer.observe(el));
+        });
+    </script>
 </body>
 </html>
