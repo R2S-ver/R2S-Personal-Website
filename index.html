@@ -79,12 +79,8 @@
         }
 
         @keyframes pwm-scroll {
-            0% {
-                background-position: 0 0%;
-            }
-            100% {
-                background-position: 0 -200%;
-            }
+            0% { background-position: 0 0%; }
+            100% { background-position: 0 -200%; }
         }
 
         .grid-overlay {
@@ -172,18 +168,9 @@
             height: 6px;
             width: 100%;
         }
-        .s-red {
-            background: var(--stripe-red);
-            flex: 1;
-        }
-        .s-yellow {
-            background: var(--stripe-yellow);
-            flex: 1;
-        }
-        .s-teal {
-            background: var(--stripe-teal);
-            flex: 1;
-        }
+        .s-red { background: var(--stripe-red); flex: 1; }
+        .s-yellow { background: var(--stripe-yellow); flex: 1; }
+        .s-teal { background: var(--stripe-teal); flex: 1; }
 
         nav {
             position: fixed;
@@ -265,12 +252,8 @@
             vertical-align: middle;
         }
         @keyframes blink {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         .nav-grid {
@@ -389,6 +372,9 @@
             overflow: hidden;
             box-shadow: inset 0 0 30px rgba(255, 95, 31, 0.3);
             clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            /* 渐变消失边框和内容 */
+            -webkit-mask: radial-gradient(circle at center, black 35%, transparent 80%);
+            mask: radial-gradient(circle at center, black 35%, transparent 80%);
         }
         .radar-x,
         .radar-y {
@@ -417,7 +403,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: conic-gradient(from 0deg, transparent 0deg, rgba(255, 255, 255, 0.6) 12deg, transparent 45deg);
+            background: conic-gradient(from 0deg, 
+                transparent 0deg, 
+                rgba(255, 255, 255, 0.45) 8deg, 
+                rgba(255, 255, 255, 0.1) 16deg, 
+                transparent 32deg);
             border-radius: 0;
             z-index: 1;
             pointer-events: none;
@@ -598,7 +588,7 @@
                     <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: bold;">[ CASSETTE.SIDE-A // LOADED ]</div>
                 </div>
                 <p style="max-width: 540px; color: #ffffff; margin-top: 35px; font-size: 1.1rem; border-left: 3px solid var(--accent); padding-left: 20px; font-weight: 500;">
-                    Bridge the gap between TECH and AESTHETIC by pairing artistic intuition with a research-driven mindset. My goal is to ensure that visual elegance is always grounded in technical rigor and practical execution.
+                    I bridge the gap between TECH and AESTHETIC by pairing artistic intuition with a research-driven mindset. My goal is to ensure that visual elegance is always grounded in technical rigor and practical execution.
                 </p>
             </div>
 
@@ -831,7 +821,7 @@
 
     <script>
         (function() {
-            // --- 高密度神经网络粒子 (带惯性缓动) ---
+            // --- 神经网络粒子 (速度降低约1/3，舒缓动态) ---
             const canvas = document.getElementById('neural-canvas');
             const ctx = canvas.getContext('2d');
             let particles = [];
@@ -850,40 +840,65 @@
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
                 particles = [];
-                const density = window.innerWidth < 900 ? 60 : 140;
+                const density = window.innerWidth < 900 ? 80 : 160;
                 for (let i = 0; i < density; i++) {
                     particles.push({
                         x: Math.random() * canvas.width,
                         y: Math.random() * canvas.height,
-                        vx: (Math.random() - 0.5) * 0.35,
-                        vy: (Math.random() - 0.5) * 0.35,
-                        size: Math.random() * 1.5 + 1,
-                        color: Math.random() > 0.45 ? 'rgba(255, 95, 31, 0.8)' : 'rgba(0, 176, 255, 0.8)'
+                        vx: (Math.random() - 0.5) * 0.37,
+                        vy: (Math.random() - 0.5) * 0.37,
+                        size: Math.random() * 2.2 + 1.2,
+                        color: Math.random() > 0.4 ? 'rgba(255, 95, 31, 0.9)' : 'rgba(0, 176, 255, 0.9)',
+                        phase: Math.random() * Math.PI * 2,
+                        speed: 0.013 + Math.random() * 0.02,
+                        driftVx: 0,
+                        driftVy: 0,
+                        targetDriftVx: 0,
+                        targetDriftVy: 0,
+                        driftTimer: Math.random() * 100
                     });
                 }
             }
 
+            let time = 0;
+
             function animateParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+                time += 0.007;
 
                 particles.forEach(p => {
+                    p.vx += Math.sin(time * 3 + p.phase) * 0.008;
+                    p.vy += Math.cos(time * 2.5 + p.phase) * 0.008;
+
+                    p.driftTimer -= 1;
+                    if (p.driftTimer <= 0) {
+                        p.targetDriftVx = (Math.random() - 0.5) * 0.2;
+                        p.targetDriftVy = (Math.random() - 0.5) * 0.2;
+                        p.driftTimer = 120 + Math.random() * 80;
+                    }
+                    p.driftVx += (p.targetDriftVx - p.driftVx) * 0.02;
+                    p.driftVy += (p.targetDriftVy - p.driftVy) * 0.02;
+                    p.vx += p.driftVx * 0.07;
+                    p.vy += p.driftVy * 0.07;
+
                     if (mouse.x !== null && mouse.y !== null) {
                         const dx = p.x - mouse.x;
                         const dy = p.y - mouse.y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
                         if (dist < mouse.radius && dist > 0.1) {
-                            const force = (1 - dist / mouse.radius) * 0.09;
+                            const force = (1 - dist / mouse.radius) * 0.12;
                             p.vx += (dx / dist) * force;
                             p.vy += (dy / dist) * force;
                         }
                     }
 
-                    p.vx *= 0.985;
-                    p.vy *= 0.985;
+                    p.vx *= 0.992;
+                    p.vy *= 0.992;
 
-                    if (Math.abs(p.vx) < 0.015 && Math.abs(p.vy) < 0.015 && (mouse.x === null || mouse.y === null)) {
-                        p.vx += (Math.random() - 0.5) * 0.025;
-                        p.vy += (Math.random() - 0.5) * 0.025;
+                    const currentSpeed = Math.sqrt(p.vx ** 2 + p.vy ** 2);
+                    if (currentSpeed < 0.15 && (mouse.x === null || mouse.y === null)) {
+                        p.vx += (Math.random() - 0.5) * 0.04;
+                        p.vy += (Math.random() - 0.5) * 0.04;
                     }
 
                     p.x += p.vx;
@@ -895,17 +910,20 @@
                     if (p.y > canvas.height) { p.y = canvas.height; p.vy *= -0.7; }
 
                     ctx.fillStyle = p.color;
+                    ctx.shadowColor = p.color;
+                    ctx.shadowBlur = 6;
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     ctx.fill();
+                    ctx.shadowBlur = 0;
 
                     particles.forEach(p2 => {
                         const dx2 = p.x - p2.x;
                         const dy2 = p.y - p2.y;
                         const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-                        if (dist2 < 120) {
-                            ctx.strokeStyle = `rgba(255, 255, 255, ${0.28 - dist2 / 550})`;
-                            ctx.lineWidth = 0.8;
+                        if (dist2 < 140) {
+                            ctx.strokeStyle = `rgba(255, 255, 255, ${0.35 - dist2 / 500})`;
+                            ctx.lineWidth = 1;
                             ctx.beginPath();
                             ctx.moveTo(p.x, p.y);
                             ctx.lineTo(p2.x, p2.y);
@@ -921,14 +939,14 @@
             animateParticles();
             window.addEventListener('resize', initParticles);
 
-            // --- 雷达绿点：只在扫描到时可见，未扫描时完全隐藏 ---
+            // --- 雷达绿点：只在扫描到时可见，未扫描时完全隐藏，转速降为1/3 ---
             const radarSweep = document.getElementById('radar-sweep');
             const radarContainer = document.getElementById('radar');
             if (radarContainer && radarSweep) {
                 const blipCount = 12;
                 let blips = [];
                 let sweepAngle = 0;
-                const sweepSpeed = (2 * Math.PI) / 2.2;
+                const sweepSpeed = (2 * Math.PI) / 6.6; // 原2.2，现在6.6（降低到1/3速度）
 
                 function createDynamicBlips() {
                     radarContainer.querySelectorAll('.radar-blip').forEach(el => el.remove());
