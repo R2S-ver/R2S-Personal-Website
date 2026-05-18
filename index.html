@@ -3,387 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bob Jannes - Industrial Design Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
+    <title>BOB JANNES | MISSION CONTROL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f1f0e8; 
-            --dark-gray: #3a3934; 
-            --text-dark: #222222;
-            --accent-orange: #ef7d25; 
-            --accent-green: #bbc97c; 
+            --bg: #0d0d0d;
+            --panel: #1a1a1a;
+            --accent-orange: #ef7d25;
             --stripe-red: #9a2b22;
             --stripe-yellow: #e49e49;
             --stripe-teal: #6db0a3;
+            --text-main: #e0e0e0;
+            --text-dim: #888;
+            --font-main: 'Futura', 'Space Grotesk', sans-serif;
+            --font-mono: 'Space Mono', monospace;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
 
         body {
-            margin: 0;
-            padding: 0;
-            /* 优先使用 Futura，没有则降级到 Jost */
-            font-family: 'Futura', 'Jost', 'Trebuchet MS', Arial, sans-serif;
-            color: var(--text-dark);
-            background-color: var(--bg-color);
-            background-image: radial-gradient(#d3d3d3 1px, transparent 1px);
-            background-size: 8px 8px;
-            overflow-x: hidden; /* 防止动画引发横向滚动条 */
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            /* 扫描线背景 */
+            background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                              linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 4px, 3px 100%;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        /* 顶部进度条 - Apple风格 */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 4px; background: var(--accent-orange);
+            width: 0%; z-index: 1000; transition: width 0.1s ease-out;
         }
 
-        /* 统一使用 Futura 变体风格 */
-        .title-font { font-weight: 900; text-transform: uppercase; }
-        .sub-font { font-weight: 500; text-transform: uppercase; }
+        /* 装饰性经纬度刻度 */
+        .deco-border {
+            position: fixed; border: 1px solid rgba(255,255,255,0.1);
+            z-index: 100; pointer-events: none;
+        }
+        .top-left { top: 20px; left: 20px; padding: 5px; font-family: var(--font-mono); font-size: 10px; color: var(--stripe-teal);}
 
-        /* ==================== 动画定义 (Keyframes) ==================== */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes growDown {
-            from { transform: scaleY(0); }
-            to { transform: scaleY(1); }
-        }
+        /* 布局容器 */
+        .container { max-width: 1300px; margin: 0 auto; padding: 80px 20px; }
 
-        @keyframes growRight {
-            from { transform: scaleX(0); }
-            to { transform: scaleX(1); }
-        }
-
-        /* 滚动触发基础类 */
-        .reveal {
-            opacity: 0; /* 初始隐藏，由JS配合动画类展现 */
-        }
-        .reveal.active {
-            animation: fadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-        /* 为多个元素设置动画延迟，形成错落有致的感觉 */
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.3s; }
-        .delay-3 { animation-delay: 0.5s; }
-
-        /* ==================== 封面部分 ==================== */
+        /* --- Hero Section --- */
         .hero {
-            height: 80vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            text-align: center;
+            align-items: flex-start;
             position: relative;
-            background: rgba(241, 240, 232, 0.7); 
-            animation: fadeInUp 1s ease-out forwards; /* 封面首屏直接播放动画 */
         }
-        .hero h2 { color: var(--accent-orange); margin-bottom: 0; font-size: 1.5rem; letter-spacing: 2px;}
+        .hero-id { font-family: var(--font-mono); color: var(--accent-orange); font-size: 14px; letter-spacing: 4px; margin-bottom: 10px;}
         .hero h1 { 
-            font-size: 6rem; 
-            margin: -10px 0 10px 0; 
-            letter-spacing: 5px; 
+            font-size: clamp(3rem, 10vw, 8rem); 
+            font-weight: 700; line-height: 0.9; text-transform: uppercase; margin-bottom: 20px;
         }
-        .hero .year { color: var(--accent-orange); font-size: 2.5rem; position: absolute; right: 20%; top: 55%; font-weight: 700;}
-        .hero .name { 
-            font-size: 2.5rem; 
-            border-bottom: 5px solid var(--text-dark); 
-            padding-bottom: 5px;
-            letter-spacing: 3px;
-            font-weight: 900;
+        .hero-stripes { display: flex; gap: 5px; margin-bottom: 30px; }
+        .hero-stripe { width: 60px; height: 8px; border-radius: 2px; }
+
+        /* --- Bento Grid 系统 --- */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 280px;
+            gap: 20px;
         }
 
-        /* ==================== 关于我 ==================== */
-        .about-section {
+        .bento-item {
+            background: var(--panel);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
             display: flex;
-            margin-top: 100px;
-            position: relative;
-            padding-left: 60px; 
-        }
-        
-        /* 动态三色条纹 */
-        .about-stripes {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 45px;
-            display: flex;
-        }
-        .stripe { 
-            flex: 1; 
-            height: 100%; 
-            transform-origin: top; 
-            transform: scaleY(0); /* 初始状态压缩为0 */
-            transition: filter 0.3s ease, flex 0.3s ease; /* 悬浮过渡动画 */
-        }
-        .stripe:hover {
-            filter: brightness(1.2);
-            flex: 1.5; /* 鼠标放上去条纹变宽 */
-            cursor: pointer;
-        }
-        
-        /* 当父级变为 active 时，触发条纹向下生长 */
-        .about-section.active .stripe.red { animation: growDown 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards; background-color: var(--stripe-red); }
-        .about-section.active .stripe.yellow { animation: growDown 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards; background-color: var(--stripe-yellow); }
-        .about-section.active .stripe.teal { animation: growDown 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards; background-color: var(--stripe-teal); }
-
-        .about-col-left { flex: 1; padding-right: 40px; }
-        .about-col-right { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-
-        .name-tag {
-            background-color: var(--dark-gray);
-            color: white;
-            display: inline-block;
-            padding: 5px 20px;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .section-title { font-size: 2.5rem; margin-bottom: 10px; font-weight: 900; }
-        .title-green { color: var(--accent-green); text-shadow: 1px 1px 0 #000; }
-        .title-orange { color: var(--accent-orange); }
-
-        .about-text { font-size: 1rem; line-height: 1.6; border-left: 3px solid var(--text-dark); padding-left: 15px; }
-        
-        .list-group p, .list-group ul { margin: 5px 0 15px 0; font-size: 1rem; line-height: 1.5; font-weight: 500;}
-        .list-group ul { list-style-type: square; padding-left: 20px; }
-        .icons { font-size: 1.5rem; letter-spacing: 10px; }
-
-        /* ==================== 项目过渡带 ==================== */
-        .projects-banner {
-            background-color: var(--dark-gray);
-            color: white;
-            text-align: left;
-            padding: 40px 60px;
-            margin: 100px 0;
-            position: relative;
-            border-bottom: 10px solid var(--stripe-red);
-        }
-        /* 横向色条的入场动画 */
-        .projects-banner::after {
-            content: ""; position: absolute; bottom: -20px; left: 0; width: 100%; height: 10px; background-color: var(--stripe-yellow);
-            transform-origin: left; transform: scaleX(0); transition: transform 0.8s ease;
-        }
-        .projects-banner::before {
-            content: ""; position: absolute; bottom: -30px; left: 0; width: 100%; height: 10px; background-color: var(--stripe-teal);
-            transform-origin: left; transform: scaleX(0); transition: transform 0.8s ease 0.2s;
-        }
-        .projects-banner.active::after, .projects-banner.active::before {
-            transform: scaleX(1);
-        }
-
-        .projects-banner h1 { font-size: 6rem; margin: 0; letter-spacing: 8px; }
-        .projects-banner .dot { color: var(--accent-orange); }
-
-        /* ==================== 项目详情 (Powerdrill) ==================== */
-        .project-header {
-            font-size: 4rem;
-            color: var(--accent-orange);
-            border-bottom: 4px solid var(--dark-gray);
-            display: inline-block;
-            padding-right: 50px;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        /* 标题下划线悬浮动画 */
-        .project-header::after {
-            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 4px; background-color: var(--accent-orange);
-            transition: width 0.4s ease;
-        }
-        .project-header:hover::after { width: 100%; }
-
-        /* 暗色背景容器及悬浮互动 */
-        .project-dark-box {
-            background-color: var(--dark-gray);
-            background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-            color: white;
-            padding: 40px;
-            border: 2px solid #555;
-            margin-bottom: 40px;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-        .project-dark-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        /* 悬浮动效：外发光和边框 */
+        .bento-item:hover {
+            transform: translateY(-8px);
             border-color: var(--accent-orange);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(239, 125, 37, 0.2);
         }
 
-        /* 概念设计排版 */
-        .concept-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; }
-        .concept-text h3 { color: var(--accent-orange); font-size: 2rem; margin-top: 0; letter-spacing: 1px;}
-        .concept-text p { line-height: 1.6; font-size: 1.1rem; font-weight: 300;}
-        .text-highlight { color: var(--accent-orange); font-weight: 700; }
-        
-        .img-placeholder {
-            background-color: #e0e0e0; display: flex; justify-content: center; align-items: center; color: #666;
-            min-height: 400px; border: 1px dashed #999; width: 100%; transition: transform 0.3s;
+        .bento-item h2 { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; z-index: 2; }
+        .bento-item .tag { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); }
+
+        /* 特殊尺寸 */
+        .large { grid-column: span 2; grid-row: span 2; }
+        .wide { grid-column: span 2; }
+
+        /* 背景图标/图片占位 */
+        .bento-bg-icon {
+            position: absolute; right: -20px; bottom: -20px; font-size: 12rem;
+            opacity: 0.03; font-weight: 900; pointer-events: none;
         }
-        .img-placeholder:hover { transform: scale(1.02); } /* 图片悬浮微微放大 */
 
-        /* 原型排版 */
-        .prototype-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 20px; }
-        .proto-main { min-height: 500px; }
-        .proto-thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .proto-thumb { background-color: #aaa; min-height: 100px; cursor: pointer; transition: opacity 0.3s;}
-        .proto-thumb:hover { opacity: 0.7; }
+        /* --- 动画类 (Apple Scroll Reveal) --- */
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* 底部彩色色块 */
-        .bottom-colors { display: flex; justify-content: flex-end; width: 100%; gap: 10px; margin-top: 10px; }
-        .b-color { width: 50px; height: 15px; }
+        /* --- 按钮样式 --- */
+        .btn-nasa {
+            display: inline-block; padding: 15px 30px; border: 1px solid var(--accent-orange);
+            color: var(--accent-orange); text-decoration: none; font-family: var(--font-mono);
+            font-size: 13px; text-transform: uppercase; transition: 0.3s;
+            margin-top: 20px; background: transparent;
+        }
+        .btn-nasa:hover { background: var(--accent-orange); color: white; box-shadow: 0 0 20px var(--accent-orange); }
+
+        /* 分割线三色条 */
+        .divider-stripes { height: 4px; width: 100%; display: flex; margin: 40px 0; }
+
+        /* 联系方式模块 */
+        .contact-grid { display: flex; gap: 40px; margin-top: 20px; flex-wrap: wrap;}
+        .contact-link { color: var(--text-main); text-decoration: none; font-family: var(--font-mono); border-bottom: 1px solid #444; padding-bottom: 5px; transition: 0.3s;}
+        .contact-link:hover { color: var(--stripe-yellow); border-color: var(--stripe-yellow); }
+
     </style>
 </head>
 <body>
 
-    <div class="hero">
-        <h2 class="sub-font">Industrial Design</h2>
-        <h1 class="title-font">Portfolio.</h1>
-        <div class="title-font year">2025</div>
-        <div class="sub-font name">BoB JANNES</div>
-    </div>
+    <div id="scroll-progress"></div>
+    <div class="deco-border top-left">SYSTEM_STATUS: ACTIVE<br>LOG_0518: ESTABLISHED</div>
 
     <div class="container">
         
-        <section class="about-section scroll-trigger">
-            <div class="about-stripes">
-                <div class="stripe red"></div>
-                <div class="stripe yellow"></div>
-                <div class="stripe teal"></div>
+        <header class="hero">
+            <div class="hero-id reveal">BOB JANNES // ARCHIVE 2026</div>
+            <h1 class="reveal">Industrial<br><span style="color:var(--accent-orange)">Designer</span></h1>
+            <div class="hero-stripes reveal">
+                <div class="hero-stripe" style="background:var(--stripe-red)"></div>
+                <div class="hero-stripe" style="background:var(--stripe-yellow)"></div>
+                <div class="hero-stripe" style="background:var(--stripe-teal)"></div>
             </div>
+            <p class="reveal" style="max-width: 500px; line-height: 1.6; color: var(--text-dim);">
+                探索工业设计与艺术的边界。在这里，功能性不是枷锁，而是创造力的操作系统。
+            </p>
+            <a href="#projects" class="btn-nasa reveal">进入控制台</a>
+        </header>
+
+        <section id="projects" class="bento-grid">
             
-            <div class="about-col-left reveal delay-1">
-                <div class="name-tag sub-font">Bob Jannes</div>
-                <h2 class="title-font section-title title-green">About me</h2>
-                <div class="about-text">
-                    <p>"My creative journey began when I connected with an online artist, which sparked my passion for design. I explored character, prop and concept design; later learned 3D modeling and printing to turn my ideas into reality.</p>
-                    <p>This process of bringing concepts to life continues to inspire me to create practical and innovative solutions."</p>
+            <div class="bento-item large reveal">
+                <div>
+                    <span class="tag">MODULE_01</span>
+                    <h2>DIY & Industrial<br>Projects</h2>
                 </div>
-                
-                <h2 class="title-font section-title title-green" style="margin-top: 30px;">Contact</h2>
-                <div class="list-group">
-                    <p>Rotterdam<br>Netherland<br>1023456@hh.nl<br>+31 6 12345678</p>
+                <p style="color:var(--text-dim); font-size: 0.9rem;">从电钻原型到机械结构开发。点击查看完整 PPT 作品集。</p>
+                <a href="#" class="btn-nasa" style="width: fit-content;">Open File</a>
+                <div class="bento-bg-icon">⚙️</div>
+            </div>
+
+            <div class="bento-item wide reveal">
+                <div>
+                    <span class="tag">MODULE_02</span>
+                    <h2>Art & Concept</h2>
+                </div>
+                <p style="color:var(--text-dim); font-size: 0.9rem;">插画、视觉概念与 3D 渲染。</p>
+                <div class="bento-bg-icon">🎨</div>
+            </div>
+
+            <div class="bento-item reveal">
+                <div>
+                    <span class="tag">MODULE_03</span>
+                    <h2>Biography</h2>
+                </div>
+                <p style="font-size: 0.8rem; line-height: 1.4;">生于创意，长于工程。致力于将 NASA 朋克美学注入日常产品。</p>
+                <div class="bento-bg-icon">👤</div>
+            </div>
+
+            <div class="bento-item reveal">
+                <div>
+                    <span class="tag">MODULE_04</span>
+                    <h2>Tech Stack</h2>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 11px;">
+                    > SOLIDWORKS<br>
+                    > BLENDER<br>
+                    > PHOTOSHOP<br>
+                    > 3D PRINTING
                 </div>
             </div>
 
-            <div class="about-col-right reveal delay-2">
-                <div class="list-group">
-                    <h2 class="title-font section-title title-orange">Education</h2>
-                    <p>2017 - 2022<br>OSG SCHOOL</p>
-                    <p>2023 - NOW<br>Industrial Product Design<br>University of ABC</p>
+            <div class="bento-item wide reveal">
+                <div>
+                    <span class="tag">MODULE_05</span>
+                    <h2>Communication</h2>
                 </div>
-                <div></div>
-
-                <div class="list-group">
-                    <h2 class="title-font section-title title-orange">Skills___</h2>
-                    <ul>
-                        <li>3D modeling & printing</li>
-                        <li>Prototyping & Testing</li>
-                        <li>Sketching & Drawing</li>
-                    </ul>
-                    <div class="icons">Ps SW 🗜️ ⚙️</div>
+                <div class="contact-grid">
+                    <a href="mailto:1023456@hh.nl" class="contact-link">EMAIL</a>
+                    <a href="#" class="contact-link">LINKEDIN</a>
+                    <a href="#" class="contact-link">INSTAGRAM</a>
                 </div>
-
-                <div class="list-group">
-                    <h2 class="title-font section-title title-orange">Interests</h2>
-                    <ul>
-                        <li>Hiking</li>
-                        <li>Cycling</li>
-                        <li>Reading</li>
-                        <li>Drawing</li>
-                        <li>Electr. Engin</li>
-                    </ul>
-                    <div class="bottom-colors" style="justify-content: flex-start; margin-left: 20px;">
-                        <div class="b-color" style="background:var(--stripe-red)"></div>
-                        <div class="b-color" style="background:var(--stripe-yellow)"></div>
-                        <div class="b-color" style="background:var(--stripe-teal)"></div>
-                    </div>
+                <div class="divider-stripes">
+                    <div style="flex:1; background:var(--stripe-red)"></div>
+                    <div style="flex:1; background:var(--stripe-yellow)"></div>
+                    <div style="flex:1; background:var(--stripe-teal)"></div>
                 </div>
             </div>
+
+            <div class="bento-item reveal">
+                <div>
+                    <span class="tag">STATUS</span>
+                    <h2 style="color: var(--stripe-teal);">Available</h2>
+                </div>
+                <p style="font-size: 10px; font-family: var(--font-mono);">READY FOR NEW MISSIONS.</p>
+            </div>
+
         </section>
 
-        <div class="projects-banner scroll-trigger reveal">
-            <h1 class="title-font">PROJECTS<span class="dot">.</span></h1>
-        </div>
-
-        <section class="project-detail">
-            <h2 class="title-font project-header reveal">// Powerdrill</h2>
-            
-            <div class="project-dark-box concept-grid reveal delay-1">
-                <div class="concept-text">
-                    <h3 class="title-font">Concept<br><span style="color:white;">Design</span></h3>
-                    <p>The CS/PD features a <span class="text-highlight">retro-futuristic design</span> inspired by Teenage Engineering, tailored for users with <span class="text-highlight">mild to moderate rheumatoid arthritis</span>.</p>
-                    <p>Its ergonomic grip, built-in flashlight, Type-C rechargeable battery and simple torque adjustment offer comfort and ease for everyday tasks.</p>
-                </div>
-                <div class="img-placeholder">
-                    [ 渲染图位置 ]
-                </div>
-            </div>
-
-            <div class="project-dark-box reveal delay-2">
-                <div class="img-placeholder" style="min-height: 500px; background-color: transparent; border-color: #555;">
-                    [ 结构标注图位置 ]
-                </div>
-            </div>
-
-            <div class="project-dark-box reveal delay-3">
-                <h3 class="title-font" style="text-align:center; color:white; letter-spacing: 2px;">Ergonomic research</h3>
-                <div class="prototype-grid">
-                    <div class="img-placeholder proto-main">
-                        [ 主模型图 ]
-                    </div>
-                    <div class="proto-thumbs">
-                        <div class="img-placeholder proto-thumb">1</div>
-                        <div class="img-placeholder proto-thumb">2</div>
-                        <div class="img-placeholder proto-thumb">3</div>
-                        <div class="img-placeholder proto-thumb">4</div>
-                        <div class="img-placeholder proto-thumb">5</div>
-                        <div class="img-placeholder proto-thumb">6</div>
-                        <div class="img-placeholder proto-thumb">7</div>
-                        <div class="img-placeholder proto-thumb">8</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="reveal delay-1" style="display:flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--text-dark); padding-top: 10px; margin-bottom: 60px;">
-                <span class="sub-font" style="letter-spacing: 2px; font-weight: bold;">INDIVIDUAL PROJECT | PROTOTYPE</span>
-                <div class="bottom-colors" style="width: auto;">
-                    <div class="b-color" style="background:var(--stripe-red)"></div>
-                    <div class="b-color" style="background:var(--stripe-yellow)"></div>
-                    <div class="b-color" style="background:var(--stripe-teal)"></div>
-                </div>
-            </div>
-        </section>
-
+        <footer style="margin-top: 100px; text-align: center; font-family: var(--font-mono); font-size: 12px; color: #444;">
+            &copy; 2026 BOB JANNES. DESIGNED UNDER ZERO GRAVITY.
+        </footer>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // 设置一个交点观察器 (Intersection Observer)
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.15 // 当元素 15% 进入视口时触发
-            };
+        // Apple 风格滚动监听
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
 
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // 添加 active 类来播放 CSS 动画
-                        entry.target.classList.add('active');
-                        // 触发后停止观察该元素，确保动画只播放一次
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-            // 监听所有带有 reveal 或 scroll-trigger 类的元素
-            const animatedElements = document.querySelectorAll('.reveal, .scroll-trigger');
-            animatedElements.forEach(el => observer.observe(el));
-        });
+        // 顶部进度条
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("scroll-progress").style.width = scrolled + "%";
+        };
     </script>
 </body>
 </html>
