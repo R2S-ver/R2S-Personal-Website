@@ -129,6 +129,14 @@
             pointer-events: none;
         }
 
+        .radar-wrapper-black {
+            background: #111115 !important;
+        }
+        
+        .radar-wrapper-black::before {
+            background: #111115 !important;
+        }
+
         @media (max-width: 900px) {
             .cinematic-bars {
                 background: linear-gradient(to bottom,
@@ -408,7 +416,96 @@
             text-transform: uppercase;
             font-weight: bold;
         }
+        .radar-wrapper-black {
+            background: #000 !important;
+        }
 
+        .radar-console {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 16px;
+            align-items: center;
+            margin-top: 18px;
+        }
+
+        .radar-side {
+            min-height: 190px;
+            padding: 14px 12px;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)),
+                #050505;
+            border: 1px solid #1d1d24;
+            box-shadow: inset 0 0 0 1px rgba(255,95,31,0.06);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .nav-readout {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: #cfcfcf;
+            border-bottom: 1px dotted #2a2a30;
+            padding: 7px 0;
+            letter-spacing: 1px;
+        }
+
+        .nav-readout span:first-child {
+            color: #8f8f96;
+        }
+
+        .nav-value {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .nav-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-top: 12px;
+        }
+        
+        .nav-mini-grid span {
+            height: 18px;
+            background: linear-gradient(180deg, rgba(255,95,31,0.22), rgba(255,95,31,0.06));
+            border: 1px solid rgba(255,95,31,0.18);
+        }
+        
+        .nav-mini-grid-right span {
+            background: linear-gradient(180deg, rgba(0,176,255,0.22), rgba(0,176,255,0.06));
+            border-color: rgba(0,176,255,0.18);
+        }
+        
+        .radar-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 2px;
+        }
+        
+        .radar-center .radar {
+            width: 190px;
+            height: 190px;
+        }
+        
+        @media (max-width: 900px) {
+            .radar-console {
+                grid-template-columns: 1fr;
+            }
+        
+            .radar-side {
+                min-height: auto;
+            }
+        
+            .radar-center {
+                order: 0;
+            }
+        }
         .radar-wrapper {
             margin-top: 30px;
             display: flex;
@@ -416,7 +513,7 @@
             justify-content: center;
             align-items: center;
             gap: 15px;
-            background: transparent;
+            background: #000000;
             padding: 25px;
             border: 1px solid var(--border);
         }
@@ -714,7 +811,6 @@
             transform: translateX(0);
         }
 
-        /* ===== 全宽水平滚动流程区域 ===== */
         .process-flow-fullwidth {
             width: 100vw;
             margin-left: calc(-50vw + 50%);
@@ -767,7 +863,6 @@
             align-items: flex-start;
         }
 
-        /* 步骤项容器 */
         .process-step-item {
             flex-shrink: 0;
             display: flex;
@@ -793,7 +888,6 @@
             box-shadow: 0 0 20px rgba(255, 95, 31, 0.35);
         }
 
-        /* 步骤标签 */
         .process-step-label {
             margin-top: 10px;
             font-family: var(--font-mono);
@@ -1065,19 +1159,45 @@
                         </li>
                     </ul>
 
-                    <div class="radar-wrapper chamfer-box">
-                        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); width: 100%; border-bottom: 1px dashed var(--border); padding-bottom: 10px; text-align: center; letter-spacing: 2px; font-weight: 900;">
-                            [ ANTENNA ARRAY SYSTEM ]
-                        </div>
-                        <div class="radar" id="radar">
-                            <div class="radar-x"></div>
-                            <div class="radar-y"></div>
-                            <div class="radar-sweep" id="radar-sweep"></div>
-                        </div>
-                        <div class="tri-color-row" style="width: 100%; margin-top: 10px;">
-                            <div class="s-red"></div><div class="s-yellow"></div><div class="s-teal"></div>
-                        </div>
+                    <div class="radar-wrapper chamfer-box radar-wrapper-black">
+    <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); width: 100%; border-bottom: 1px dashed var(--border); padding-bottom: 10px; text-align: center; letter-spacing: 2px; font-weight: 900;">
+        [ ANTENNA ARRAY SYSTEM ]
+    </div>
+
+    <div class="radar-console">
+        <div class="radar-side radar-side-left">
+            <div class="nav-readout"><span>HDG</span><span class="nav-value"> 274.6°</span></div>
+            <div class="nav-readout"><span>RNG</span><span class="nav-value"> 1.8 KM</span></div>
+            <div class="nav-readout"><span>ALT</span><span class="nav-value"> 15 KM</span></div>
+            <div class="nav-mini-grid">
+                <span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+
+        <div class="radar-center">
+            <div class="radar" id="radar">
+                <div class="radar-x"></div>
+                <div class="radar-y"></div>
+                <div class="radar-sweep" id="radar-sweep"></div>
+            </div>
+        </div>
+
+        <div class="radar-side radar-side-right">
+            <div class="nav-readout"><span>LOCK</span><span class="nav-value">AUTO</span></div>
+            <div class="nav-readout"><span>SIG</span><span class="nav-value">92%</span></div>
+            <div class="nav-readout"><span>SCAN</span><span class="nav-value">ACTIVE</span></div>
+                    <div class="nav-mini-grid nav-mini-grid-right">
+                        <span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span>
                     </div>
+                </div>
+            </div>
+        
+            <div class="tri-color-row" style="width: 100%; margin-top: 10px;">
+                <div class="s-red"></div><div class="s-yellow"></div><div class="s-teal"></div>
+            </div>
+        </div>
                 </div>
             </div>
         </section>
@@ -1088,7 +1208,6 @@
                 <h2 style="font-size: 3.5rem; text-transform: uppercase; font-weight: 900;">// DIY_Projects</h2>
             </div>
 
-            <!-- PRJ_01: Modular Ballistic Carrier -->
             <div class="project-detailed chamfer-box reveal">
                 <div class="nasa-tape"></div>
                 <div class="dossier-grid" style="margin-top: 25px;">
@@ -1140,7 +1259,6 @@
                 </div>
             </div>
 
-            <!-- PRJ_02: CMF Light Diffusion Test Platform -->
             <div class="project-detailed chamfer-box reveal" style="border-left: 4px solid var(--accent); margin-bottom: 30px;">
                 <div class="nasa-tape" style="background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 15px, #000 15px, #000 30px); border-top: 1px solid var(--accent); border-bottom: 1px solid var(--accent);"></div>
 
@@ -1151,7 +1269,7 @@
                         <h4 style="color: var(--accent); font-family: var(--font-mono); font-size: 11px; font-weight: bold; background: #000; padding: 2px 10px; border: 1px solid var(--accent);">[ AUTOMATION ]</h4>
                     </div>
 
-                    <h3 style="font-size: 2.8rem; margin: 0 0 15px 0; line-height: 1; color: #fff;">Light Diffusion<br>Test Platform</span></h3>
+                    <h3 style="font-size: 2.8rem; margin: 0 0 15px 0; line-height: 1; color: #fff;">Light Diffusion<br>Test Platform</h3>
 
                     <p style="color: #ffffff; margin-bottom: 25px; font-size: 1.1rem; border-left: 3px solid var(--accent); padding-left: 15px; max-width: 800px;">
                         I designed and built a light diffusion test platform to systematically assess the visual performance of different materials and surface finishes under controlled lighting conditions. This platform supports early-stage <strong>CMF decision-making</strong> in product development, focusing on how materials behave in terms of light transmission, diffusion, reflection, and luminance distribution.
@@ -1211,7 +1329,7 @@
                 </div>
 
                 <div class="iterations-row">
-                        <div class="iteration-card chamfer-box" style="border-left: 3px solid var(--stripe-red);">
+                    <div class="iteration-card chamfer-box" style="border-left: 3px solid var(--stripe-red);">
                         <span class="iter-badge v1">ITER_V1</span>
                         <p style="font-family: var(--font-mono); font-size: 11px; color: #fff; margin-bottom: 10px; font-weight: bold;">Single LED // Manual Solder</p>
                         <ul>
@@ -1237,14 +1355,12 @@
                     </div>
                 </div>
 
-                <!-- 最终产品立体视图 (7) + 暗亮过渡 -->
                 <div class="hero-view-3d fade-light" id="img7">
                     <div class="text-reveal" style="font-family: var(--font-mono); font-size: 13px; color: var(--accent); margin-bottom: 20px; text-transform: uppercase; font-weight: bold;">&gt; FINAL_PRODUCT_3D_VIEW // PRIMARY_ASSET</div>
                     <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%207.png" alt="Test Platform 3D View" loading="lazy" style="max-width:100%; height:auto; max-height:600px;">
                     <div style="font-family: var(--font-mono); font-size: 10px; color: #666; margin-top: 10px;">[ FIG_7 // 673×699 px ]</div>
                 </div>
 
-                <!-- 8 与 9 对比 + 暗亮过渡 -->
                 <div class="compare-duo">
                     <div class="compare-card fade-light" id="img8">
                         <div class="text-reveal" style="font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 12px; font-weight: bold;">&gt; FINAL_RENDER (3D)</div>
@@ -1258,7 +1374,6 @@
                     </div>
                 </div>
 
-                <!-- 状态栏 -->
                 <div style="margin-top: 30px; background: #000; border: 1px solid var(--accent); padding: 20px 25px; font-family: var(--font-mono); font-size: 12px; color: #fff; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px;">
                     <span>&gt; PLATFORM_STATUS: <strong style="color: var(--terminal-green);">OPERATIONAL</strong></span>
                     <span>MCU: <strong>Arduino</strong></span>
@@ -1267,9 +1382,7 @@
                     <span style="color: var(--accent); font-weight: bold;">CMF_READY</span>
                 </div>
             </div>
-            <!-- PRJ_02 橙色框结束 -->
 
-            <!-- ===== 全宽水平滚动流程区域 (10-19) - 带步骤标签 ===== -->
             <div class="process-flow-fullwidth" id="processFlowOuter">
                 <div class="process-flow-sticky-wrapper" id="processFlowSticky">
                     <div class="process-flow-header">
@@ -1278,7 +1391,6 @@
                     </div>
                     <div class="process-flow-viewport" id="processFlowViewport">
                         <div class="process-flow-track" id="processTrack">
-                            <!-- STEP 10 -->
                             <div class="process-step-item">
                                 <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2010.png" alt="Process 10">
                                 <div class="process-step-label">
@@ -1286,7 +1398,6 @@
                                     <span class="step-desc">3D modelling</span>
                                 </div>
                             </div>
-                            <!-- STEP 11 -->
                             <div class="process-step-item">
                                 <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2011.png" alt="Process 11">
                                 <div class="process-step-label">
@@ -1294,7 +1405,6 @@
                                     <span class="step-desc">Laser cutting</span>
                                 </div>
                             </div>
-                            <!-- STEP 12 -->
                             <div class="process-step-item">
                                 <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2012.png" alt="Process 12">
                                 <div class="process-step-label">
@@ -1302,7 +1412,6 @@
                                     <span class="step-desc">Test build</span>
                                 </div>
                             </div>
-                            <!-- STEP 13 -->
                             <div class="process-step-item">
                                 <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2013.png" alt="Process 13">
                                 <div class="process-step-label">
@@ -1310,7 +1419,6 @@
                                     <span class="step-desc">Surface finish</span>
                                 </div>
                             </div>
-                            <!-- STEP 14 -->
                             <div class="process-step-item">
                                 <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2014.png" alt="Process 14">
                                 <div class="process-step-label">
@@ -1318,7 +1426,6 @@
                                     <span class="step-desc">Subassembly</span>
                                 </div>
                             </div>
-                            <!-- STEP 15 -->
                             <div class="process-step-item">
                                 <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2015.png" alt="Process 15">
                                 <div class="process-step-label">
@@ -1326,7 +1433,6 @@
                                     <span class="step-desc">Circuit soldering</span>
                                 </div>
                             </div>
-                            <!-- STEP 16 -->
                             <div class="process-step-item">
                                 <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2016.png" alt="Process 16">
                                 <div class="process-step-label">
@@ -1334,7 +1440,6 @@
                                     <span class="step-desc">Circuit verification</span>
                                 </div>
                             </div>
-                            <!-- STEP 17 -->
                             <div class="process-step-item">
                                 <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2017.png" alt="Process 17">
                                 <div class="process-step-label">
@@ -1342,7 +1447,6 @@
                                     <span class="step-desc">Polarity check</span>
                                 </div>
                             </div>
-                            <!-- STEP 18 -->
                             <div class="process-step-item">
                                 <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2018.png" alt="Process 18">
                                 <div class="process-step-label">
@@ -1350,7 +1454,6 @@
                                     <span class="step-desc">Subassembly</span>
                                 </div>
                             </div>
-                            <!-- STEP 19 -->
                             <div class="process-step-item">
                                 <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2019.png" alt="Process 19">
                                 <div class="process-step-label">
@@ -1363,7 +1466,6 @@
                 </div>
             </div>
 
-            <!-- PRJ_03: Spray-Booth V2 -->
             <div class="dossier-grid" style="margin-top: 0;">
                 <div class="tech-box chamfer-box reveal" style="border-left-color: var(--stripe-yellow);">
                     <h4><span style="color: #fff;">PRJ_03</span> <span style="color: var(--stripe-yellow); font-weight: bold;">[ PNEUMATICS ]</span></h4>
@@ -1653,7 +1755,6 @@
             setInterval(updateClock, 1000);
             updateClock();
 
-            // ===== 暗亮过渡：Scroll-driven brightness for fade-light elements =====
             const fadeLightEls = document.querySelectorAll('.fade-light');
 
             function updateFadeLightElements() {
@@ -1675,7 +1776,6 @@
                 });
             }
 
-            // ===== 水平滚动流程：修复后的 Scroll-driven horizontal pan =====
             const processFlowOuter = document.getElementById('processFlowOuter');
             const processTrack = document.getElementById('processTrack');
             const processFlowViewport = document.getElementById('processFlowViewport');
@@ -1695,13 +1795,11 @@
                 if (!processTrack || !processFlowViewport) return;
                 const trackWidth = processTrack.scrollWidth;
                 const viewportWidth = processFlowViewport.clientWidth;
-                // 增加末尾padding，确保STEP_19能完整滚入视口
                 trackMaxTranslate = Math.max(0, trackWidth - viewportWidth + 30);
                 stickyTopValue = getStickyTop();
                 metricsNeedRecalc = false;
             }
 
-            // 立即计算一次
             calculateTrackMetrics();
 
             function updateHorizontalScroll() {
@@ -1724,7 +1822,6 @@
                 const stickyStart = stickyTopValue;
                 const stickyEnd = stickyTopValue + stickyWrapperHeight - outerRect.height;
 
-                // 如果区域高度不足以让sticky滚动
                 if (outerRect.height <= stickyWrapperHeight) {
                     const fallbackProgress = Math.max(0, Math.min(1,
                         (viewportHeight - outerRect.top) / (viewportHeight + outerRect.height * 0.5)
@@ -1742,38 +1839,32 @@
                 processTrack.style.transform = `translateX(${translateX}px)`;
             }
 
-            // Main RAF loop for scroll-driven effects
             function scrollEffectsLoop() {
                 updateFadeLightElements();
                 updateHorizontalScroll();
                 requestAnimationFrame(scrollEffectsLoop);
             }
 
-            // resize时重新计算
             window.addEventListener('resize', () => {
                 metricsNeedRecalc = true;
                 calculateTrackMetrics();
             });
 
-            // load事件中重新计算（图片已全部加载）
             window.addEventListener('load', () => {
                 metricsNeedRecalc = true;
                 calculateTrackMetrics();
             });
 
-            // 延迟再算一次，确保layout稳定
             setTimeout(() => {
                 metricsNeedRecalc = true;
                 calculateTrackMetrics();
             }, 300);
 
-            // 再延迟一次（针对慢加载的图片）
             setTimeout(() => {
                 metricsNeedRecalc = true;
                 calculateTrackMetrics();
             }, 800);
 
-            // 启动主循环
             requestAnimationFrame(scrollEffectsLoop);
         })();
     </script>
