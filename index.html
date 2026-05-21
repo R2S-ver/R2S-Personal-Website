@@ -693,7 +693,6 @@
             padding: 30px;
         }
 
-        /* ===== 暗亮过渡动画 - 修改：初始不透明，只改变亮度 ===== */
         .fade-light {
             filter: brightness(0.18);
             opacity: 1;
@@ -727,7 +726,7 @@
             border-top: 2px solid var(--accent);
             border-bottom: 2px solid var(--accent);
             overflow: hidden;
-            height: 750px;
+            height: 700px;
             z-index: 5;
         }
         .process-flow-sticky-wrapper {
@@ -735,7 +734,7 @@
             top: 90px;
             width: 100%;
             height: auto;
-            padding: 20px 0;
+            padding: 20px 0 16px 0;
             z-index: 4;
             pointer-events: none;
         }
@@ -751,6 +750,7 @@
             letter-spacing: 1.5px;
             max-width: 1400px;
             margin: 0 auto;
+            pointer-events: none;
         }
         .process-flow-viewport {
             width: 100%;
@@ -764,9 +764,20 @@
             will-change: transform;
             transition: none;
             flex-wrap: nowrap;
+            align-items: flex-start;
         }
-        .process-flow-track img {
-            height: 420px;
+
+        /* 步骤项容器 */
+        .process-step-item {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        .process-step-item img {
+            height: 380px;
             width: auto;
             object-fit: contain;
             border: 1px solid var(--border);
@@ -775,10 +786,49 @@
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
             pointer-events: auto;
             cursor: pointer;
+            display: block;
         }
-        .process-flow-track img:hover {
+        .process-step-item img:hover {
             border-color: var(--accent);
             box-shadow: 0 0 20px rgba(255, 95, 31, 0.35);
+        }
+
+        /* 步骤标签 */
+        .process-step-label {
+            margin-top: 10px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: #ccc;
+            text-align: center;
+            letter-spacing: 1px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+            white-space: nowrap;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+        }
+        .step-num {
+            color: #000;
+            background: var(--accent);
+            padding: 2px 8px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            font-size: 9px;
+        }
+        .step-desc {
+            color: #fff;
+        }
+        .process-step-item:hover .process-step-label {
+            border-color: var(--accent);
+            background: rgba(10, 10, 15, 0.95);
+        }
+        .process-step-item:hover .step-num {
+            background: #fff;
+            color: #000;
         }
 
         @media (max-width: 900px) {
@@ -822,13 +872,14 @@
                 max-height: 400px;
             }
             .process-flow-fullwidth {
-                height: 450px;
+                height: 480px;
             }
             .process-flow-sticky-wrapper {
                 top: 60px;
+                padding: 12px 0 10px 0;
             }
-            .process-flow-track img {
-                height: 240px;
+            .process-step-item img {
+                height: 220px;
             }
             .process-flow-header {
                 padding: 0 20px 8px 20px;
@@ -837,6 +888,16 @@
             .process-flow-track {
                 padding: 0 20px;
                 gap: 12px;
+            }
+            .process-step-label {
+                font-size: 8px;
+                padding: 4px 10px;
+                gap: 5px;
+                margin-top: 7px;
+            }
+            .step-num {
+                font-size: 7px;
+                padding: 2px 6px;
             }
         }
 
@@ -1079,7 +1140,7 @@
                 </div>
             </div>
 
-            <!-- PRJ_02: CMF Light Diffusion Test Platform (橙色主题) -->
+            <!-- PRJ_02: CMF Light Diffusion Test Platform -->
             <div class="project-detailed chamfer-box reveal" style="border-left: 4px solid var(--accent); margin-bottom: 30px;">
                 <div class="nasa-tape" style="background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 15px, #000 15px, #000 30px); border-top: 1px solid var(--accent); border-bottom: 1px solid var(--accent);"></div>
 
@@ -1090,7 +1151,7 @@
                         <h4 style="color: var(--accent); font-family: var(--font-mono); font-size: 11px; font-weight: bold; background: #000; padding: 2px 10px; border: 1px solid var(--accent);">[ AUTOMATION ]</h4>
                     </div>
 
-                    <h3 style="font-size: 2.8rem; margin: 0 0 15px 0; line-height: 1; color: #fff;">Light Diffusion<br><span style="color: var(--accent);">Test Platform</span></h3>
+                    <h3 style="font-size: 2.8rem; margin: 0 0 15px 0; line-height: 1; color: #fff;">Light Diffusion<br>Test Platform</span></h3>
 
                     <p style="color: #ffffff; margin-bottom: 25px; font-size: 1.1rem; border-left: 3px solid var(--accent); padding-left: 15px; max-width: 800px;">
                         I designed and built a light diffusion test platform to systematically assess the visual performance of different materials and surface finishes under controlled lighting conditions. This platform supports early-stage <strong>CMF decision-making</strong> in product development, focusing on how materials behave in terms of light transmission, diffusion, reflection, and luminance distribution.
@@ -1197,7 +1258,7 @@
                     </div>
                 </div>
 
-                <!-- 状态栏保留在橙色框内 -->
+                <!-- 状态栏 -->
                 <div style="margin-top: 30px; background: #000; border: 1px solid var(--accent); padding: 20px 25px; font-family: var(--font-mono); font-size: 12px; color: #fff; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px;">
                     <span>&gt; PLATFORM_STATUS: <strong style="color: var(--terminal-green);">OPERATIONAL</strong></span>
                     <span>MCU: <strong>Arduino</strong></span>
@@ -1208,7 +1269,7 @@
             </div>
             <!-- PRJ_02 橙色框结束 -->
 
-            <!-- ===== 全宽水平滚动流程区域 (10-19) - 移到橙色框之外 ===== -->
+            <!-- ===== 全宽水平滚动流程区域 (10-19) - 带步骤标签 ===== -->
             <div class="process-flow-fullwidth" id="processFlowOuter">
                 <div class="process-flow-sticky-wrapper" id="processFlowSticky">
                     <div class="process-flow-header">
@@ -1217,16 +1278,86 @@
                     </div>
                     <div class="process-flow-viewport" id="processFlowViewport">
                         <div class="process-flow-track" id="processTrack">
-                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2010.png" alt="Process 10" loading="lazy">
-                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2011.png" alt="Process 11" loading="lazy">
-                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2012.png" alt="Process 12" loading="lazy">
-                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2013.png" alt="Process 13" loading="lazy">
-                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2014.png" alt="Process 14" loading="lazy">
-                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2015.png" alt="Process 15" loading="lazy">
-                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2016.png" alt="Process 16" loading="lazy">
-                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2017.png" alt="Process 17" loading="lazy">
-                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2018.png" alt="Process 18" loading="lazy">
-                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2019.png" alt="Process 19" loading="lazy">
+                            <!-- STEP 10 -->
+                            <div class="process-step-item">
+                                <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2010.png" alt="Process 10">
+                                <div class="process-step-label">
+                                    <span class="step-num">STEP_10</span>
+                                    <span class="step-desc">3D modelling</span>
+                                </div>
+                            </div>
+                            <!-- STEP 11 -->
+                            <div class="process-step-item">
+                                <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2011.png" alt="Process 11">
+                                <div class="process-step-label">
+                                    <span class="step-num">STEP_11</span>
+                                    <span class="step-desc">Laser cutting</span>
+                                </div>
+                            </div>
+                            <!-- STEP 12 -->
+                            <div class="process-step-item">
+                                <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2012.png" alt="Process 12">
+                                <div class="process-step-label">
+                                    <span class="step-num">STEP_12</span>
+                                    <span class="step-desc">Test build</span>
+                                </div>
+                            </div>
+                            <!-- STEP 13 -->
+                            <div class="process-step-item">
+                                <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2013.png" alt="Process 13">
+                                <div class="process-step-label">
+                                    <span class="step-num">STEP_13</span>
+                                    <span class="step-desc">Surface finish</span>
+                                </div>
+                            </div>
+                            <!-- STEP 14 -->
+                            <div class="process-step-item">
+                                <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2014.png" alt="Process 14">
+                                <div class="process-step-label">
+                                    <span class="step-num">STEP_14</span>
+                                    <span class="step-desc">Subassembly</span>
+                                </div>
+                            </div>
+                            <!-- STEP 15 -->
+                            <div class="process-step-item">
+                                <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2015.png" alt="Process 15">
+                                <div class="process-step-label">
+                                    <span class="step-num">STEP_15</span>
+                                    <span class="step-desc">Circuit soldering</span>
+                                </div>
+                            </div>
+                            <!-- STEP 16 -->
+                            <div class="process-step-item">
+                                <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2016.png" alt="Process 16">
+                                <div class="process-step-label">
+                                    <span class="step-num">STEP_16</span>
+                                    <span class="step-desc">Circuit verification</span>
+                                </div>
+                            </div>
+                            <!-- STEP 17 -->
+                            <div class="process-step-item">
+                                <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2017.png" alt="Process 17">
+                                <div class="process-step-label">
+                                    <span class="step-num">STEP_17</span>
+                                    <span class="step-desc">Polarity check</span>
+                                </div>
+                            </div>
+                            <!-- STEP 18 -->
+                            <div class="process-step-item">
+                                <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2018.png" alt="Process 18">
+                                <div class="process-step-label">
+                                    <span class="step-num">STEP_18</span>
+                                    <span class="step-desc">Subassembly</span>
+                                </div>
+                            </div>
+                            <!-- STEP 19 -->
+                            <div class="process-step-item">
+                                <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2019.png" alt="Process 19">
+                                <div class="process-step-label">
+                                    <span class="step-num">STEP_19</span>
+                                    <span class="step-desc">Circuit testing (PWM duty cycle observed)</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1524,23 +1655,18 @@
 
             // ===== 暗亮过渡：Scroll-driven brightness for fade-light elements =====
             const fadeLightEls = document.querySelectorAll('.fade-light');
-            const textRevealEls = document.querySelectorAll('.text-reveal');
 
             function updateFadeLightElements() {
                 const viewportHeight = window.innerHeight;
                 fadeLightEls.forEach(el => {
                     const rect = el.getBoundingClientRect();
                     const elCenterY = rect.top + rect.height * 0.5;
-                    // progress: 0 when element center is at bottom of viewport, 1 when at 35% from top
                     const progress = 1 - (elCenterY / viewportHeight);
                     const clampedProgress = Math.max(0, Math.min(1, progress * 1.4));
-                    // brightness from 0.18 to 1
                     const brightness = 0.18 + clampedProgress * 0.82;
                     el.style.filter = `brightness(${brightness})`;
-                    // Add active-light class when sufficiently bright for text reveals
                     if (clampedProgress > 0.5 && !el.classList.contains('active-light')) {
                         el.classList.add('active-light');
-                        // Trigger child text reveals
                         el.querySelectorAll('.text-reveal').forEach(tr => tr.classList.add('active-text'));
                     } else if (clampedProgress <= 0.3 && el.classList.contains('active-light')) {
                         el.classList.remove('active-light');
@@ -1549,63 +1675,105 @@
                 });
             }
 
-            // ===== 水平滚动流程：Scroll-driven horizontal pan =====
+            // ===== 水平滚动流程：修复后的 Scroll-driven horizontal pan =====
             const processFlowOuter = document.getElementById('processFlowOuter');
             const processTrack = document.getElementById('processTrack');
             const processFlowViewport = document.getElementById('processFlowViewport');
-            let horizontalScrollActive = false;
+            const processFlowSticky = document.getElementById('processFlowSticky');
             let trackMaxTranslate = 0;
+            let stickyTopValue = 90;
+            let metricsNeedRecalc = true;
+
+            function getStickyTop() {
+                if (!processFlowSticky) return 90;
+                const style = getComputedStyle(processFlowSticky);
+                const topVal = parseInt(style.top, 10);
+                return isNaN(topVal) ? 90 : topVal;
+            }
 
             function calculateTrackMetrics() {
                 if (!processTrack || !processFlowViewport) return;
                 const trackWidth = processTrack.scrollWidth;
                 const viewportWidth = processFlowViewport.clientWidth;
-                trackMaxTranslate = Math.max(0, trackWidth - viewportWidth + 40);
+                // 增加末尾padding，确保STEP_19能完整滚入视口
+                trackMaxTranslate = Math.max(0, trackWidth - viewportWidth + 30);
+                stickyTopValue = getStickyTop();
+                metricsNeedRecalc = false;
             }
+
+            // 立即计算一次
+            calculateTrackMetrics();
 
             function updateHorizontalScroll() {
-                if (!processFlowOuter || !processTrack || !horizontalScrollActive) return;
-                const outerRect = processFlowOuter.getBoundingClientRect();
-                const viewportHeight = window.innerHeight;
-                // The sticky wrapper keeps the track visible between outerRect.top <= 90 and outerRect.bottom >= ~510
-                const scrollStart = outerRect.top;
-                const scrollEnd = outerRect.bottom - viewportHeight;
-                const scrollRange = scrollEnd - scrollStart;
-                if (scrollRange <= 0) return;
-                const progress = Math.max(0, Math.min(1, -scrollStart / scrollRange));
-                const translateX = -progress * trackMaxTranslate;
-                processTrack.style.transform = `translateX(${translateX}px)`;
-            }
-
-            function checkHorizontalScrollActive() {
-                if (!processFlowOuter) return;
-                const outerRect = processFlowOuter.getBoundingClientRect();
-                const viewportHeight = window.innerHeight;
-                // Active when outer container overlaps viewport
-                horizontalScrollActive = (outerRect.top < viewportHeight && outerRect.bottom > 0);
-                if (horizontalScrollActive) {
+                if (!processFlowOuter || !processTrack || !processFlowSticky) return;
+                if (metricsNeedRecalc) {
                     calculateTrackMetrics();
                 }
+                if (trackMaxTranslate <= 0) {
+                    processTrack.style.transform = 'translateX(0px)';
+                    return;
+                }
+
+                const outerRect = processFlowOuter.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+                const stickyWrapperHeight = processFlowSticky.offsetHeight;
+
+                const isInViewport = outerRect.top < viewportHeight && outerRect.bottom > 0;
+                if (!isInViewport) return;
+
+                const stickyStart = stickyTopValue;
+                const stickyEnd = stickyTopValue + stickyWrapperHeight - outerRect.height;
+
+                // 如果区域高度不足以让sticky滚动
+                if (outerRect.height <= stickyWrapperHeight) {
+                    const fallbackProgress = Math.max(0, Math.min(1,
+                        (viewportHeight - outerRect.top) / (viewportHeight + outerRect.height * 0.5)
+                    ));
+                    const translateX = -fallbackProgress * trackMaxTranslate;
+                    processTrack.style.transform = `translateX(${translateX}px)`;
+                    return;
+                }
+
+                const scrollableRange = stickyStart - stickyEnd;
+                const rawProgress = (stickyStart - outerRect.top) / scrollableRange;
+                const progress = Math.max(0, Math.min(1, rawProgress));
+
+                const translateX = -progress * trackMaxTranslate;
+                processTrack.style.transform = `translateX(${translateX}px)`;
             }
 
             // Main RAF loop for scroll-driven effects
             function scrollEffectsLoop() {
                 updateFadeLightElements();
-                checkHorizontalScrollActive();
                 updateHorizontalScroll();
                 requestAnimationFrame(scrollEffectsLoop);
             }
 
-            // Initial calculation and resize handler
+            // resize时重新计算
             window.addEventListener('resize', () => {
-                calculateTrackMetrics();
-            });
-            window.addEventListener('load', () => {
+                metricsNeedRecalc = true;
                 calculateTrackMetrics();
             });
 
-            // Start the loop
-            calculateTrackMetrics();
+            // load事件中重新计算（图片已全部加载）
+            window.addEventListener('load', () => {
+                metricsNeedRecalc = true;
+                calculateTrackMetrics();
+            });
+
+            // 延迟再算一次，确保layout稳定
+            setTimeout(() => {
+                metricsNeedRecalc = true;
+                calculateTrackMetrics();
+            }, 300);
+
+            // 再延迟一次（针对慢加载的图片）
+            setTimeout(() => {
+                metricsNeedRecalc = true;
+                calculateTrackMetrics();
+            }, 800);
+
+            // 启动主循环
             requestAnimationFrame(scrollEffectsLoop);
         })();
     </script>
