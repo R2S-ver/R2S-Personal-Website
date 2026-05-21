@@ -1,10 +1,10 @@
+<!DOCTYPE html>
 <html lang="en" data-immersive-translate-page-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>R2S | PERSONAL WEBSITE v5.5</title>
 
-    <!-- Favicon 图标（全部使用相对路径，适用于 GitHub Pages 根目录） -->
     <link rel="icon" href="./favicon.ico" sizes="any">
     <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16">
     <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32">
@@ -92,8 +92,12 @@
         }
 
         @keyframes pwm-scroll {
-            0% { background-position: 0 0%; }
-            100% { background-position: 0 -200%; }
+            0% {
+                background-position: 0 0%;
+            }
+            100% {
+                background-position: 0 -200%;
+            }
         }
 
         .grid-overlay {
@@ -108,7 +112,6 @@
             opacity: 0.25;
         }
 
-        /* 电影感上下黑边渐变层 */
         .cinematic-bars {
             position: fixed;
             top: 0;
@@ -126,7 +129,6 @@
             pointer-events: none;
         }
 
-        /* 移动端略微减弱黑边强度，避免遮挡内容 */
         @media (max-width: 900px) {
             .cinematic-bars {
                 background: linear-gradient(to bottom,
@@ -210,9 +212,18 @@
             height: 6px;
             width: 100%;
         }
-        .s-red { background: var(--stripe-red); flex: 1; }
-        .s-yellow { background: var(--stripe-yellow); flex: 1; }
-        .s-teal { background: var(--stripe-teal); flex: 1; }
+        .s-red {
+            background: var(--stripe-red);
+            flex: 1;
+        }
+        .s-yellow {
+            background: var(--stripe-yellow);
+            flex: 1;
+        }
+        .s-teal {
+            background: var(--stripe-teal);
+            flex: 1;
+        }
 
         nav {
             position: fixed;
@@ -294,8 +305,13 @@
             vertical-align: middle;
         }
         @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
         }
 
         .nav-grid {
@@ -444,11 +460,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: conic-gradient(from 0deg, 
-                transparent 0deg, 
-                rgba(255, 255, 255, 0.45) 8deg, 
-                rgba(255, 255, 255, 0.1) 16deg, 
-                transparent 32deg);
+            background: conic-gradient(from 0deg,
+                    transparent 0deg,
+                    rgba(255, 255, 255, 0.45) 8deg,
+                    rgba(255, 255, 255, 0.1) 16deg,
+                    transparent 32deg);
             border-radius: 0;
             z-index: 1;
             pointer-events: none;
@@ -566,6 +582,205 @@
             font-weight: bold;
         }
 
+        .iteration-card {
+            background: #0a0a0f;
+            border: 1px solid var(--border);
+            padding: 25px 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .iteration-card:hover {
+            border-color: var(--accent);
+            background: #111118;
+        }
+        .iteration-card .iter-badge {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 900;
+            padding: 4px 10px;
+            display: inline-block;
+            margin-bottom: 14px;
+            letter-spacing: 1.5px;
+        }
+        .iter-badge.v1 {
+            background: var(--stripe-red);
+            color: #000;
+        }
+        .iter-badge.v2 {
+            background: var(--stripe-yellow);
+            color: #000;
+        }
+        .iter-badge.v3 {
+            background: var(--accent);
+            color: #000;
+        }
+        .iteration-card ul {
+            list-style: none;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: #ccc;
+            line-height: 1.9;
+            padding: 0;
+        }
+        .iteration-card ul li::before {
+            content: '▸ ';
+            color: var(--accent);
+        }
+        .tag-label {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 900;
+            padding: 3px 8px;
+            margin-right: 6px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .tag-pro {
+            background: var(--terminal-green);
+            color: #000;
+        }
+        .tag-con {
+            background: var(--stripe-red);
+            color: #fff;
+        }
+
+        .wide-concept-img {
+            width: 100%;
+            height: auto;
+            max-height: 200px;
+            object-fit: contain;
+            border: 1px solid var(--border);
+            background: #08080c;
+            display: block;
+        }
+        .concept-img-standard {
+            width: 100%;
+            height: auto;
+            max-height: 352px;
+            object-fit: contain;
+            border: 1px solid var(--border);
+            background: #08080c;
+            display: block;
+        }
+
+        .compare-duo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .compare-card {
+            background: #000;
+            border: 1px solid var(--border);
+            padding: 20px;
+            text-align: center;
+        }
+        .compare-card img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            background: #08080c;
+            border: 1px solid var(--border);
+        }
+
+        .hero-view-3d {
+            margin-top: 40px;
+            text-align: center;
+            background: #000;
+            border: 1px solid var(--accent);
+            padding: 30px;
+        }
+
+        /* ===== 暗亮过渡动画 - 修改：初始不透明，只改变亮度 ===== */
+        .fade-light {
+            filter: brightness(0.18);
+            opacity: 1;
+            transition: filter 1s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
+            will-change: filter;
+        }
+        .fade-light.active-light {
+            filter: brightness(1);
+            opacity: 1;
+        }
+
+        .text-reveal {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .text-reveal.active-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ===== 全宽水平滚动流程区域 ===== */
+        .process-flow-fullwidth {
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            margin-right: calc(-50vw + 50%);
+            position: relative;
+            margin-top: 0;
+            margin-bottom: 60px;
+            background: #040408;
+            border-top: 2px solid var(--accent);
+            border-bottom: 2px solid var(--accent);
+            overflow: hidden;
+            height: 750px;
+            z-index: 5;
+        }
+        .process-flow-sticky-wrapper {
+            position: sticky;
+            top: 90px;
+            width: 100%;
+            height: auto;
+            padding: 20px 0;
+            z-index: 4;
+            pointer-events: none;
+        }
+        .process-flow-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px 10px 40px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .process-flow-viewport {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .process-flow-track {
+            display: flex;
+            gap: 18px;
+            padding: 0 40px;
+            will-change: transform;
+            transition: none;
+            flex-wrap: nowrap;
+        }
+        .process-flow-track img {
+            height: 420px;
+            width: auto;
+            object-fit: contain;
+            border: 1px solid var(--border);
+            background: #0a0a0f;
+            flex-shrink: 0;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        .process-flow-track img:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(255, 95, 31, 0.35);
+        }
+
         @media (max-width: 900px) {
             .nav-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -591,14 +806,69 @@
                 grid-template-columns: repeat(2, 1fr);
                 grid-template-rows: 1fr;
             }
+            .iterations-row {
+                grid-template-columns: 1fr !important;
+            }
+            .wide-concept-img {
+                max-height: 120px;
+            }
+            .concept-img-standard {
+                max-height: 220px;
+            }
+            .compare-duo {
+                grid-template-columns: 1fr;
+            }
+            .hero-view-3d img {
+                max-height: 400px;
+            }
+            .process-flow-fullwidth {
+                height: 450px;
+            }
+            .process-flow-sticky-wrapper {
+                top: 60px;
+            }
+            .process-flow-track img {
+                height: 240px;
+            }
+            .process-flow-header {
+                padding: 0 20px 8px 20px;
+                font-size: 10px;
+            }
+            .process-flow-track {
+                padding: 0 20px;
+                gap: 12px;
+            }
+        }
+
+        .iterations-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .variable-chip {
+            display: inline-block;
+            background: #16161c;
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: #ffffff;
+            margin: 4px 6px 4px 0;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        .variable-chip:hover {
+            border-color: var(--accent);
+            background: #1c1c24;
         }
     </style>
 </head>
 <body>
     <div class="grid-overlay"></div>
     <canvas id="neural-canvas"></canvas>
-
-    <!-- 电影感上下黑边渐变层 -->
     <div class="cinematic-bars"></div>
 
     <nav>
@@ -615,7 +885,6 @@
     </nav>
 
     <div class="container">
-
         <header class="hero">
             <div class="hero-text reveal active">
                 <div class="hero-data-tag">REG_FILE // RETRO_FUTURE_PUNK</div>
@@ -758,6 +1027,7 @@
                 <h2 style="font-size: 3.5rem; text-transform: uppercase; font-weight: 900;">// DIY_Projects</h2>
             </div>
 
+            <!-- PRJ_01: Modular Ballistic Carrier -->
             <div class="project-detailed chamfer-box reveal">
                 <div class="nasa-tape"></div>
                 <div class="dossier-grid" style="margin-top: 25px;">
@@ -787,7 +1057,6 @@
                                     <tr><td>Soft Armor</td><td>Layered Aramid Composites</td></tr>
                                     <tr><td>Hard Armor</td><td>8mm Alloy Plate</td></tr>
                                     <tr><td>Trauma pad</td><td>10mm Ventilated PU Foam</td></tr>
-                                    <tr><td>Carrier</td><td>1000D Nylon Oxford</td></tr>
                                     <tr><td>Ergonomic</td><td>3D Micro-mesh Air-ducts</td></tr>
                                 </tbody>
                             </table>
@@ -810,16 +1079,177 @@
                 </div>
             </div>
 
-            <div class="dossier-grid">
-                <div class="tech-box chamfer-box reveal" style="border-left-color: var(--stripe-teal);">
-                    <h4><span style="color: #fff;">PRJ_02</span> <span style="color: var(--stripe-teal); font-weight: bold;">[ AUTOMATION ]</span></h4>
-                    <h3 style="font-size: 1.8rem; margin: 10px 0; color: #fff;">Light Diffusion Test Platform</h3>
-                    <p style="font-size: 14px; color: #ffffff; line-height: 1.6;">A custom automated platform integrated with an Arduino MCU and precise stepper drivers to chart omnidirectional material refraction profiles.</p>
+            <!-- PRJ_02: CMF Light Diffusion Test Platform (橙色主题) -->
+            <div class="project-detailed chamfer-box reveal" style="border-left: 4px solid var(--accent); margin-bottom: 30px;">
+                <div class="nasa-tape" style="background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 15px, #000 15px, #000 30px); border-top: 1px solid var(--accent); border-bottom: 1px solid var(--accent);"></div>
+
+                <div style="margin-top: 25px;">
+                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
+                        <h4 style="color: #000; font-family: var(--font-mono); background: var(--accent); padding: 4px 12px; font-weight: bold; font-size: 11px;">PRJ_02</h4>
+                        <h4 style="color: #ffffff; font-family: var(--font-mono); font-size: 12px; font-weight: bold; background: #222; padding: 2px 8px;">CMF_SCATTERING_LAB</h4>
+                        <h4 style="color: var(--accent); font-family: var(--font-mono); font-size: 11px; font-weight: bold; background: #000; padding: 2px 10px; border: 1px solid var(--accent);">[ AUTOMATION ]</h4>
+                    </div>
+
+                    <h3 style="font-size: 2.8rem; margin: 0 0 15px 0; line-height: 1; color: #fff;">Light Diffusion<br><span style="color: var(--accent);">Test Platform</span></h3>
+
+                    <p style="color: #ffffff; margin-bottom: 25px; font-size: 1.1rem; border-left: 3px solid var(--accent); padding-left: 15px; max-width: 800px;">
+                        I designed and built a light diffusion test platform to systematically assess the visual performance of different materials and surface finishes under controlled lighting conditions. This platform supports early-stage <strong>CMF decision-making</strong> in product development, focusing on how materials behave in terms of light transmission, diffusion, reflection, and luminance distribution.
+                    </p>
                 </div>
+
+                <div class="dossier-grid" style="margin-top: 10px;">
+                    <div>
+                        <div class="tech-box" style="padding: 30px; background: #000000; border-left-color: var(--accent);">
+                            <div class="spec-sheet-title" style="color: var(--accent);">TEST_MATERIALS_MATRIX</div>
+                            <table class="materials-table">
+                                <tbody>
+                                    <tr><td>Material 01</td><td>Translucent 3D-printed PLA</td></tr>
+                                    <tr><td>Material 02</td><td>Translucent 3D-printed PETG</td></tr>
+                                    <tr><td>Material 03</td><td>Acrylic Sheet</td></tr>
+                                    <tr><td>Material 04</td><td>AB Epoxy Resin Plate</td></tr>
+                                    <tr><td>Material 05</td><td>PC Light Diffuser Sheet</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="tech-box" style="padding: 30px; background: #000000; border-left-color: var(--stripe-yellow); margin-top: 20px;">
+                            <h4 style="color: #ffffff;"><span>CONTROLLABLE_VARIABLES</span> <span class="sec-tag" style="background: var(--stripe-yellow); color: #000 !important;">[ PARAMETERS ]</span></h4>
+                            <div style="margin-top: 16px;">
+                                <span class="variable-chip">Light Intensity</span>
+                                <span class="variable-chip">Material Type</span>
+                                <span class="variable-chip">Material Color</span>
+                                <span class="variable-chip">Material Thickness</span>
+                                <span class="variable-chip">Surface Finish</span>
+                                <span class="variable-chip">Diffusion Distance</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="tech-box" style="padding: 25px; background: #000000; border-left-color: var(--accent);">
+                            <h4 style="color: #ffffff;"><span>CONCEPT_DESIGN</span> <span class="sec-tag">[ OVERVIEW ]</span></h4>
+                            <p style="font-family: var(--font-mono); font-size: 11px; color: #aaa; margin-bottom: 16px; text-transform: uppercase;">&gt; PLATFORM_ARCHITECTURE_RENDER</p>
+                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%206.png" alt="Concept Design" class="concept-img-standard img-frame" style="max-height:300px; width:100%;" loading="lazy">
+                            <div style="font-family: var(--font-mono); font-size: 10px; color: var(--accent); margin-top: 10px; text-align: right; font-weight: bold;">[ FIG_A // 754×352 px ]</div>
+                        </div>
+
+                        <div style="background: #0d0d14; border: 1px solid var(--border); padding: 22px; margin-top: 20px; font-family: var(--font-mono); font-size: 12px; color: #fff; line-height: 1.8;">
+                            <strong style="color: var(--stripe-yellow); font-size: 13px;">&gt; CRITICAL_FIX_LOG:</strong><br>
+                            <span style="color: #ccc;">The copper foil tape could not safely carry <strong style="color: var(--stripe-red);">2A current</strong> after calculation. Therefore, replaced with <strong style="color: var(--terminal-green);">oxygen-free copper wire</strong> of at least <strong>0.5 mm² cross-sectional area</strong>.</span><br><br>
+                            <span style="color: #ccc;">In addition, the frame of the test panel was <strong>painted black</strong> to absorb as much ambient light as possible and minimize the influence of material indirect reflections.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 35px; background: #08080c; border: 1px solid var(--border); padding: 15px;">
+                    <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-bottom: 12px; display: flex; justify-content: space-between;">
+                        <span>&gt; ITERATION_COMPARISON_CHART // V1 → V2 → V3</span>
+                        <span style="color: #fff; font-weight: bold;">[ FIG_B // 1233×200 px ]</span>
+                    </div>
+                    <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%205.png" alt="Iterations" class="wide-concept-img" loading="lazy">
+                </div>
+
+                <div class="iterations-row">
+                    <div class="iteration-card chamfer-box">
+                        <span class="iter-badge v1">ITER_V1</span>
+                        <p style="font-family: var(--font-mono); font-size: 11px; color: #fff; margin-bottom: 10px; font-weight: bold;">Single LED // Manual Solder</p>
+                        <ul>
+                            <li style="color: var(--font-mono);"><span class="tag-label tag-con">CON</span> Take too much time to solder</li>
+                            <li style="color: var(--font-mono);"><span class="tag-label tag-con">CON</span> Light effect not ideal</li>
+                        </ul>
+                    </div>
+                    <div class="iteration-card chamfer-box" style="border-left: 3px solid var(--stripe-yellow);">
+                        <span class="iter-badge v2">ITER_V2</span>
+                        <p style="font-family: var(--font-mono); font-size: 11px; color: #fff; margin-bottom: 10px; font-weight: bold;">LED Strip // Copper Tape</p>
+                        <ul>
+                            <li style="color: var(--font-mono);"><span class="tag-label tag-con">CON</span> Tape not suitable for 2A current</li>
+                            <li style="color: var(--font-mono);"><span class="tag-label tag-con">CON</span> Couldn't change brightness</li>
+                        </ul>
+                    </div>
+                    <div class="iteration-card chamfer-box" style="border-left: 3px solid var(--accent);">
+                        <span class="iter-badge v3">ITER_V3</span>
+                        <p style="font-family: var(--font-mono); font-size: 11px; color: #fff; margin-bottom: 10px; font-weight: bold;">LED Strip + PWM Controller</p>
+                        <ul>
+                            <li style="color: var(--font-mono);"><span class="tag-label tag-pro">PRO</span> Able to change brightness</li>
+                            <li style="color: var(--font-mono);"><span class="tag-label tag-pro">PRO</span> Dark surface emits reflected light influence</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 最终产品立体视图 (7) + 暗亮过渡 -->
+                <div class="hero-view-3d fade-light" id="img7">
+                    <div class="text-reveal" style="font-family: var(--font-mono); font-size: 13px; color: var(--accent); margin-bottom: 20px; text-transform: uppercase; font-weight: bold;">&gt; FINAL_PRODUCT_3D_VIEW // PRIMARY_ASSET</div>
+                    <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%207.png" alt="Final Product 3D View" loading="lazy" style="max-width:100%; height:auto; max-height:600px;">
+                    <div style="font-family: var(--font-mono); font-size: 10px; color: #666; margin-top: 10px;">[ FIG_7 // 673×699 px ]</div>
+                </div>
+
+                <!-- 8 与 9 对比 + 暗亮过渡 -->
+                <div class="compare-duo">
+                    <div class="compare-card fade-light" id="img8">
+                        <div class="text-reveal" style="font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 12px; font-weight: bold;">&gt; FINAL_RENDER (3D)</div>
+                        <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%208.png" alt="Final Render 3D" loading="lazy">
+                        <div style="font-family: var(--font-mono); font-size: 10px; color: #666; margin-top: 8px;">[ FIG_8 // 540×567 px ]</div>
+                    </div>
+                    <div class="compare-card fade-light" id="img9">
+                        <div class="text-reveal" style="font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 12px; font-weight: bold;">&gt; CONCEPT_SKETCH (2D)</div>
+                        <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%209.png" alt="Concept Sketch 2D" loading="lazy">
+                        <div style="font-family: var(--font-mono); font-size: 10px; color: #666; margin-top: 8px;">[ FIG_9 // 891×855 px ]</div>
+                    </div>
+                </div>
+
+                <!-- 状态栏保留在橙色框内 -->
+                <div style="margin-top: 30px; background: #000; border: 1px solid var(--accent); padding: 20px 25px; font-family: var(--font-mono); font-size: 12px; color: #fff; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px;">
+                    <span>&gt; PLATFORM_STATUS: <strong style="color: var(--terminal-green);">OPERATIONAL</strong></span>
+                    <span>MCU: <strong>Arduino</strong></span>
+                    <span>DRIVER: <strong>Precision Stepper</strong></span>
+                    <span>TEST_CAPABILITY: <strong>Omnidirectional Refraction Profiling</strong></span>
+                    <span style="color: var(--accent); font-weight: bold;">CMF_READY</span>
+                </div>
+            </div>
+            <!-- PRJ_02 橙色框结束 -->
+
+            <!-- ===== 全宽水平滚动流程区域 (10-19) - 移到橙色框之外 ===== -->
+            <div class="process-flow-fullwidth" id="processFlowOuter">
+                <div class="process-flow-sticky-wrapper" id="processFlowSticky">
+                    <div class="process-flow-header">
+                        <span>&gt; FABRICATION_PROCESS_FLOW // STEP_10 → STEP_19</span>
+                        <span style="color: #fff;">[ SCROLL_TO_PAN ]</span>
+                    </div>
+                    <div class="process-flow-viewport" id="processFlowViewport">
+                        <div class="process-flow-track" id="processTrack">
+                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2010.png" alt="Process 10" loading="lazy">
+                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2011.png" alt="Process 11" loading="lazy">
+                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2012.png" alt="Process 12" loading="lazy">
+                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2013.png" alt="Process 13" loading="lazy">
+                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2014.png" alt="Process 14" loading="lazy">
+                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2015.png" alt="Process 15" loading="lazy">
+                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2016.png" alt="Process 16" loading="lazy">
+                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2017.png" alt="Process 17" loading="lazy">
+                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2018.png" alt="Process 18" loading="lazy">
+                            <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2019.png" alt="Process 19" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRJ_03: Spray-Booth V2 -->
+            <div class="dossier-grid" style="margin-top: 0;">
                 <div class="tech-box chamfer-box reveal" style="border-left-color: var(--stripe-yellow);">
                     <h4><span style="color: #fff;">PRJ_03</span> <span style="color: var(--stripe-yellow); font-weight: bold;">[ PNEUMATICS ]</span></h4>
                     <h3 style="font-size: 1.8rem; margin: 10px 0; color: #fff;">Spray-Booth V2</h3>
                     <p style="font-size: 14px; color: #ffffff; line-height: 1.6;">Industrial laboratory-grade desktop spray enclosure. Built with a heavy-duty dual positive-pressure HEPA & activated carbon extraction core.</p>
+                    <div style="margin-top: 20px; font-family: var(--font-mono); font-size: 11px; color: #aaa; border-top: 1px dashed var(--border); padding-top: 15px;">
+                        <span class="variable-chip">HEPA Filtration</span>
+                        <span class="variable-chip">Activated Carbon</span>
+                        <span class="variable-chip">Positive Pressure</span>
+                    </div>
+                </div>
+                <div class="tech-box chamfer-box reveal" style="border-left-color: var(--accent); display: flex; align-items: center; justify-content: center;">
+                    <div style="text-align: center;">
+                        <div class="tri-color-row" style="width: 140px; margin: 0 auto 15px auto;"><div class="s-red"></div><div class="s-yellow"></div><div class="s-teal"></div></div>
+                        <p style="font-family: var(--font-mono); font-size: 12px; color: #fff; font-weight: bold;">&gt; MORE_PROJECTS_INBOUND</p>
+                        <p style="font-family: var(--font-mono); font-size: 10px; color: #666; margin-top: 5px;">[ ARCHIVE_EXPANDING ]</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -830,7 +1260,6 @@
                 <div class="tri-color-row" style="width: 240px; margin: 20px auto;"><div class="s-red"></div><div class="s-yellow"></div><div class="s-teal"></div></div>
                 <p style="color: #ffffff; font-family: var(--font-mono); margin-top: 10px; font-weight: bold;">&gt; ACCESSING_VISUAL_ASSET_MATRIX...</p>
             </div>
-
             <div class="chamfer-box" style="background: repeating-linear-gradient(45deg, #121216, #121216 12px, #050507 12px, #050507 24px); border: 1px dashed var(--accent); padding: 80px; text-align: center;">
                 <div style="background: #000; display: inline-block; padding: 25px 45px; border: 1px solid var(--border);">
                     <div class="hero-data-tag" style="background: var(--stripe-yellow); color: #000; border: none; font-weight: 900;">CRITICAL_WARNING // BUFFER_EMPTY</div>
@@ -843,10 +1272,8 @@
             <div class="chamfer-box" style="background: #000; border: 2px solid var(--accent); padding: 80px; text-align: center; position: relative;">
                 <div class="nasa-tape" style="position: absolute; top: 0; left: 0;"></div>
                 <div class="barcode" style="position: absolute; bottom: 20px; right: 20px; opacity: 0.3;"></div>
-
                 <h4 style="font-family: var(--font-mono); color: #ffffff; margin-bottom: 15px; letter-spacing: 4px; font-weight: bold; font-size: 18px;">&gt; DATA_UPLINK_INITIALIZED</h4>
                 <h2 style="font-size: clamp(2rem, 6vw, 4rem); font-weight: 900; letter-spacing: -2px; color: #fff;">ranrsuika@gmail.com</h2>
-
                 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 35px; margin-top: 40px; font-family: var(--font-mono); font-size: 18px; color: #ffffff; font-weight: bold; background: rgba(255,255,255,0.08); padding: 20px 30px; border: 1px solid var(--border);">
                     <span class="contact-bright">LOC: <span style="color:#ffffff;">ROTTERDAM // NL</span></span>
                     <span class="contact-bright">ENCRYPTION: <span style="color:#ffffff;">SECURED_SSL</span></span>
@@ -866,7 +1293,6 @@
 
     <script>
         (function() {
-            // --- 神经网络粒子 (速度降低约1/3，舒缓动态) ---
             const canvas = document.getElementById('neural-canvas');
             const ctx = canvas.getContext('2d');
             let particles = [];
@@ -949,10 +1375,14 @@
                     p.x += p.vx;
                     p.y += p.vy;
 
-                    if (p.x < 0) { p.x = 0; p.vx *= -0.7; }
-                    if (p.x > canvas.width) { p.x = canvas.width; p.vx *= -0.7; }
-                    if (p.y < 0) { p.y = 0; p.vy *= -0.7; }
-                    if (p.y > canvas.height) { p.y = canvas.height; p.vy *= -0.7; }
+                    if (p.x < 0) { p.x = 0;
+                        p.vx *= -0.7; }
+                    if (p.x > canvas.width) { p.x = canvas.width;
+                        p.vx *= -0.7; }
+                    if (p.y < 0) { p.y = 0;
+                        p.vy *= -0.7; }
+                    if (p.y > canvas.height) { p.y = canvas.height;
+                        p.vy *= -0.7; }
 
                     ctx.fillStyle = p.color;
                     ctx.shadowColor = p.color;
@@ -984,14 +1414,13 @@
             animateParticles();
             window.addEventListener('resize', initParticles);
 
-            // --- 雷达绿点：只在扫描到时可见，未扫描时完全隐藏，转速降为1/3 ---
             const radarSweep = document.getElementById('radar-sweep');
             const radarContainer = document.getElementById('radar');
             if (radarContainer && radarSweep) {
                 const blipCount = 12;
                 let blips = [];
                 let sweepAngle = 0;
-                const sweepSpeed = (2 * Math.PI) / 6.6; // 原2.2，现在6.6（降低到1/3速度）
+                const sweepSpeed = (2 * Math.PI) / 6.6;
 
                 function createDynamicBlips() {
                     radarContainer.querySelectorAll('.radar-blip').forEach(el => el.remove());
@@ -1030,7 +1459,8 @@
                         b.element.style.left = b.x + '%';
                         b.element.style.top = b.y + '%';
 
-                        const centerX = 50, centerY = 50;
+                        const centerX = 50,
+                            centerY = 50;
                         const dx = b.x - centerX;
                         const dy = b.y - centerY;
                         const angle = Math.atan2(dy, dx);
@@ -1054,7 +1484,6 @@
                 requestAnimationFrame(updateRadar);
             }
 
-            // --- 终端打字效果 ---
             const terminal = document.getElementById('terminal-content');
             if (terminal) {
                 const logs = [
@@ -1064,6 +1493,7 @@
                     "> LOGS: ALL CORE STYLES COMPLIED."
                 ];
                 let line = 0;
+
                 function typeLog() {
                     if (line < logs.length) {
                         const p = document.createElement('div');
@@ -1077,7 +1507,6 @@
                 setTimeout(typeLog, 1000);
             }
 
-            // --- 滚动显示动画 ---
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) entry.target.classList.add('active');
@@ -1085,7 +1514,6 @@
             }, { threshold: 0.05 });
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-            // --- 实时时钟 ---
             function updateClock() {
                 const now = new Date();
                 const clockEl = document.getElementById('clock');
@@ -1093,6 +1521,92 @@
             }
             setInterval(updateClock, 1000);
             updateClock();
+
+            // ===== 暗亮过渡：Scroll-driven brightness for fade-light elements =====
+            const fadeLightEls = document.querySelectorAll('.fade-light');
+            const textRevealEls = document.querySelectorAll('.text-reveal');
+
+            function updateFadeLightElements() {
+                const viewportHeight = window.innerHeight;
+                fadeLightEls.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    const elCenterY = rect.top + rect.height * 0.5;
+                    // progress: 0 when element center is at bottom of viewport, 1 when at 35% from top
+                    const progress = 1 - (elCenterY / viewportHeight);
+                    const clampedProgress = Math.max(0, Math.min(1, progress * 1.4));
+                    // brightness from 0.18 to 1
+                    const brightness = 0.18 + clampedProgress * 0.82;
+                    el.style.filter = `brightness(${brightness})`;
+                    // Add active-light class when sufficiently bright for text reveals
+                    if (clampedProgress > 0.5 && !el.classList.contains('active-light')) {
+                        el.classList.add('active-light');
+                        // Trigger child text reveals
+                        el.querySelectorAll('.text-reveal').forEach(tr => tr.classList.add('active-text'));
+                    } else if (clampedProgress <= 0.3 && el.classList.contains('active-light')) {
+                        el.classList.remove('active-light');
+                        el.querySelectorAll('.text-reveal').forEach(tr => tr.classList.remove('active-text'));
+                    }
+                });
+            }
+
+            // ===== 水平滚动流程：Scroll-driven horizontal pan =====
+            const processFlowOuter = document.getElementById('processFlowOuter');
+            const processTrack = document.getElementById('processTrack');
+            const processFlowViewport = document.getElementById('processFlowViewport');
+            let horizontalScrollActive = false;
+            let trackMaxTranslate = 0;
+
+            function calculateTrackMetrics() {
+                if (!processTrack || !processFlowViewport) return;
+                const trackWidth = processTrack.scrollWidth;
+                const viewportWidth = processFlowViewport.clientWidth;
+                trackMaxTranslate = Math.max(0, trackWidth - viewportWidth + 40);
+            }
+
+            function updateHorizontalScroll() {
+                if (!processFlowOuter || !processTrack || !horizontalScrollActive) return;
+                const outerRect = processFlowOuter.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+                // The sticky wrapper keeps the track visible between outerRect.top <= 90 and outerRect.bottom >= ~510
+                const scrollStart = outerRect.top;
+                const scrollEnd = outerRect.bottom - viewportHeight;
+                const scrollRange = scrollEnd - scrollStart;
+                if (scrollRange <= 0) return;
+                const progress = Math.max(0, Math.min(1, -scrollStart / scrollRange));
+                const translateX = -progress * trackMaxTranslate;
+                processTrack.style.transform = `translateX(${translateX}px)`;
+            }
+
+            function checkHorizontalScrollActive() {
+                if (!processFlowOuter) return;
+                const outerRect = processFlowOuter.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+                // Active when outer container overlaps viewport
+                horizontalScrollActive = (outerRect.top < viewportHeight && outerRect.bottom > 0);
+                if (horizontalScrollActive) {
+                    calculateTrackMetrics();
+                }
+            }
+
+            // Main RAF loop for scroll-driven effects
+            function scrollEffectsLoop() {
+                updateFadeLightElements();
+                checkHorizontalScrollActive();
+                updateHorizontalScroll();
+                requestAnimationFrame(scrollEffectsLoop);
+            }
+
+            // Initial calculation and resize handler
+            window.addEventListener('resize', () => {
+                calculateTrackMetrics();
+            });
+            window.addEventListener('load', () => {
+                calculateTrackMetrics();
+            });
+
+            // Start the loop
+            calculateTrackMetrics();
+            requestAnimationFrame(scrollEffectsLoop);
         })();
     </script>
 </body>
