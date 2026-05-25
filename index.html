@@ -92,12 +92,8 @@
         }
 
         @keyframes pwm-scroll {
-            0% {
-                background-position: 0 0%;
-            }
-            100% {
-                background-position: 0 -200%;
-            }
+            0% { background-position: 0 0%; }
+            100% { background-position: 0 -200%; }
         }
 
         .grid-overlay {
@@ -127,14 +123,6 @@
                     rgba(0, 0, 0, 0.9) 100%);
             z-index: 999;
             pointer-events: none;
-        }
-
-        .radar-wrapper-black {
-            background: #111115 !important;
-        }
-        
-        .radar-wrapper-black::before {
-            background: #111115 !important;
         }
 
         @media (max-width: 900px) {
@@ -220,18 +208,9 @@
             height: 6px;
             width: 100%;
         }
-        .s-red {
-            background: var(--stripe-red);
-            flex: 1;
-        }
-        .s-yellow {
-            background: var(--stripe-yellow);
-            flex: 1;
-        }
-        .s-teal {
-            background: var(--stripe-teal);
-            flex: 1;
-        }
+        .s-red { background: var(--stripe-red); flex: 1; }
+        .s-yellow { background: var(--stripe-yellow); flex: 1; }
+        .s-teal { background: var(--stripe-teal); flex: 1; }
 
         nav {
             position: fixed;
@@ -313,13 +292,8 @@
             vertical-align: middle;
         }
         @keyframes blink {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         .nav-grid {
@@ -363,6 +337,201 @@
             transform: translateY(-4px);
         }
 
+        /* ================= 新插入：横向项目展示条样式 ================= */
+        .project-showcase {
+            width: 100%;
+            height: 420px;
+            display: flex;
+            gap: 6px;
+            margin: 60px 0;
+            position: relative;
+            z-index: 10;
+        }
+        @media (max-width: 900px) {
+            .project-showcase {
+                flex-direction: column;
+                height: auto;
+                min-height: 600px;
+            }
+        }
+
+        .showcase-panel {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+            transition: flex 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            cursor: pointer;
+        }
+        .showcase-panel:hover {
+            flex: 3.5;
+        }
+        @media (max-width: 900px) {
+            .showcase-panel:hover {
+                flex: 2;
+            }
+        }
+        .showcase-panel.coming-soon {
+            cursor: default;
+        }
+
+        .showcase-bg {
+            position: absolute;
+            inset: 0;
+        }
+        .showcase-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.35) contrast(1.1);
+            transition: filter 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .showcase-panel:hover .showcase-bg img {
+            filter: brightness(0.55) contrast(1.1);
+        }
+        .showcase-bg.placeholder-bg {
+            background: repeating-linear-gradient(45deg, #1a1a22 0px, #1a1a22 20px, #0f0f15 20px, #0f0f15 40px);
+        }
+
+        .showcase-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 55%);
+            z-index: 1;
+        }
+
+        .showcase-index {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            background: rgba(0,0,0,0.75);
+            padding: 3px 10px;
+            z-index: 3;
+            border: 1px solid var(--accent);
+        }
+        .showcase-spine {
+            position: absolute;
+            top: 20px;
+            right: 10px;
+            font-family: var(--font-main);
+            font-weight: 900;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            writing-mode: vertical-rl;
+            color: #fff;
+            opacity: 0.6;
+            z-index: 2;
+            transition: opacity 0.4s, transform 0.4s;
+            text-shadow: 0 0 15px rgba(0,0,0,0.6);
+        }
+        .showcase-panel:hover .showcase-spine {
+            opacity: 0;
+            transform: translateX(10px);
+        }
+        @media (max-width: 900px) {
+            .showcase-spine {
+                writing-mode: horizontal-tb;
+                top: auto;
+                bottom: 15px;
+                right: auto;
+                left: 15px;
+            }
+            .showcase-panel:hover .showcase-spine {
+                opacity: 0;
+                transform: translateX(0);
+            }
+        }
+
+        .showcase-details {
+            position: absolute;
+            bottom: 25px;
+            left: 25px;
+            right: 25px;
+            z-index: 3;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s 0.15s, transform 0.5s 0.15s;
+            pointer-events: none;
+        }
+        .showcase-panel:hover .showcase-details {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .showcase-category {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            text-transform: uppercase;
+            background: rgba(0,0,0,0.65);
+            padding: 3px 8px;
+            display: inline-block;
+            margin-bottom: 5px;
+            border: 1px solid var(--accent);
+        }
+        .showcase-title {
+            font-size: clamp(1.4rem, 4vw, 2.4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .showcase-desc {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            max-width: 32ch;
+            color: #ccc;
+            margin-bottom: 12px;
+        }
+        .showcase-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 14px;
+        }
+        .showcase-tags span {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--border);
+            padding: 2px 7px;
+            color: #bbb;
+        }
+        .showcase-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--accent);
+            text-decoration: none;
+            border: 1px solid var(--accent);
+            padding: 5px 14px;
+            transition: background 0.3s, color 0.3s;
+            letter-spacing: 0.05em;
+        }
+        .showcase-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+        .showcase-btn.disabled {
+            border-color: #444;
+            color: #555;
+            pointer-events: none;
+        }
+
+        /* ================= 原有样式继续 ================= */
         .dossier-grid {
             display: grid;
             grid-template-columns: 1.2fr 0.8fr;
@@ -417,7 +586,11 @@
             font-weight: bold;
         }
         .radar-wrapper-black {
-            background: #000 !important;
+            background: #111115 !important;
+        }
+        
+        .radar-wrapper-black::before {
+            background: #111115 !important;
         }
 
         .radar-console {
@@ -699,18 +872,9 @@
             margin-bottom: 14px;
             letter-spacing: 1.5px;
         }
-        .iter-badge.v1 {
-            background: var(--stripe-red);
-            color: #000;
-        }
-        .iter-badge.v2 {
-            background: var(--stripe-yellow);
-            color: #000;
-        }
-        .iter-badge.v3 {
-            background: var(--terminal-green);
-            color: #000;
-        }
+        .iter-badge.v1 { background: var(--stripe-red); color: #000; }
+        .iter-badge.v2 { background: var(--stripe-yellow); color: #000; }
+        .iter-badge.v3 { background: var(--terminal-green); color: #000; }
         .iteration-card ul {
             list-style: none;
             font-family: var(--font-mono);
@@ -733,14 +897,8 @@
             letter-spacing: 1px;
             text-transform: uppercase;
         }
-        .tag-pro {
-            background: var(--terminal-green);
-            color: #000;
-        }
-        .tag-con {
-            background: var(--stripe-red);
-            color: #fff;
-        }
+        .tag-pro { background: var(--terminal-green); color: #000; }
+        .tag-con { background: var(--stripe-red); color: #fff; }
 
         .wide-concept-img {
             width: 100%;
@@ -1160,55 +1318,130 @@
                     </ul>
 
                     <div class="radar-wrapper chamfer-box radar-wrapper-black">
-    <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); width: 100%; border-bottom: 1px dashed var(--border); padding-bottom: 10px; text-align: center; letter-spacing: 2px; font-weight: 900;">
-        [ ANTENNA ARRAY SYSTEM ]
-    </div>
-
-    <div class="radar-console">
-        <div class="radar-side radar-side-left">
-            <div class="nav-readout"><span>HDG</span><span class="nav-value"> 274.6°</span></div>
-            <div class="nav-readout"><span>RNG</span><span class="nav-value"> 1.8 KM</span></div>
-            <div class="nav-readout"><span>ALT</span><span class="nav-value"> 15 KM</span></div>
-            <div class="nav-mini-grid">
-                <span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span>
-            </div>
-        </div>
-
-        <div class="radar-center">
-            <div class="radar" id="radar">
-                <div class="radar-x"></div>
-                <div class="radar-y"></div>
-                <div class="radar-sweep" id="radar-sweep"></div>
-            </div>
-        </div>
-
-        <div class="radar-side radar-side-right">
-            <div class="nav-readout"><span>LOCK</span><span class="nav-value">AUTO</span></div>
-            <div class="nav-readout"><span>SIG</span><span class="nav-value">92%</span></div>
-            <div class="nav-readout"><span>SCAN</span><span class="nav-value">ACTIVE</span></div>
-                    <div class="nav-mini-grid nav-mini-grid-right">
-                        <span></span><span></span><span></span><span></span>
-                        <span></span><span></span><span></span><span></span>
+                        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); width: 100%; border-bottom: 1px dashed var(--border); padding-bottom: 10px; text-align: center; letter-spacing: 2px; font-weight: 900;">
+                            [ ANTENNA ARRAY SYSTEM ]
+                        </div>
+                        <div class="radar-console">
+                            <div class="radar-side radar-side-left">
+                                <div class="nav-readout"><span>HDG</span><span class="nav-value"> 274.6°</span></div>
+                                <div class="nav-readout"><span>RNG</span><span class="nav-value"> 1.8 KM</span></div>
+                                <div class="nav-readout"><span>ALT</span><span class="nav-value"> 15 KM</span></div>
+                                <div class="nav-mini-grid">
+                                    <span></span><span></span><span></span><span></span>
+                                    <span></span><span></span><span></span><span></span>
+                                </div>
+                            </div>
+                            <div class="radar-center">
+                                <div class="radar" id="radar">
+                                    <div class="radar-x"></div>
+                                    <div class="radar-y"></div>
+                                    <div class="radar-sweep" id="radar-sweep"></div>
+                                </div>
+                            </div>
+                            <div class="radar-side radar-side-right">
+                                <div class="nav-readout"><span>LOCK</span><span class="nav-value">AUTO</span></div>
+                                <div class="nav-readout"><span>SIG</span><span class="nav-value">92%</span></div>
+                                <div class="nav-readout"><span>SCAN</span><span class="nav-value">ACTIVE</span></div>
+                                <div class="nav-mini-grid nav-mini-grid-right">
+                                    <span></span><span></span><span></span><span></span>
+                                    <span></span><span></span><span></span><span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tri-color-row" style="width: 100%; margin-top: 10px;">
+                            <div class="s-red"></div><div class="s-yellow"></div><div class="s-teal"></div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        
-            <div class="tri-color-row" style="width: 100%; margin-top: 10px;">
-                <div class="s-red"></div><div class="s-yellow"></div><div class="s-teal"></div>
-            </div>
-        </div>
                 </div>
             </div>
         </section>
 
         <section id="projects" class="detail-section">
-            <div class="section-header reveal" style="margin-bottom: 50px;">
+            <div class="section-header reveal" style="margin-bottom: 30px;">
                 <div class="hero-data-tag">CRITICAL LAYER // FABRICATION PARAMETERS</div>
                 <h2 style="font-size: 3.5rem; text-transform: uppercase; font-weight: 900;">// DIY_Projects</h2>
             </div>
 
-            <div class="project-detailed chamfer-box reveal">
+            <!-- ===== 新插入：横向项目展示条 ===== -->
+            <div class="project-showcase reveal" style="margin-top: 10px; margin-bottom: 60px;">
+                <!-- Panel 01: 防弹载体 -->
+                <div class="showcase-panel" onclick="document.getElementById('prj01').scrollIntoView({behavior:'smooth'});">
+                    <div class="showcase-bg">
+                        <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%201.jpeg" alt="Ballistic Carrier" loading="eager">
+                    </div>
+                    <div class="showcase-overlay"></div>
+                    <span class="showcase-index">01 / 04</span>
+                    <span class="showcase-spine">BALLISTIC</span>
+                    <div class="showcase-details">
+                        <span class="showcase-category">Tactical Textile Lab</span>
+                        <h3 class="showcase-title">Modular<br>Ballistic Carrier</h3>
+                        <p class="showcase-desc">Hand-sewn heavy-duty vest. Pattern drafting, Kevlar stitching, MOLLE system.</p>
+                        <div class="showcase-tags">
+                            <span>1000D Nylon</span><span>Aramid</span><span>PU Foam</span><span>3D Mesh</span>
+                        </div>
+                        <span class="showcase-btn">Jump to Details</span>
+                    </div>
+                </div>
+
+                <!-- Panel 02: 光扩散平台 -->
+                <div class="showcase-panel" onclick="document.getElementById('prj02').scrollIntoView({behavior:'smooth'});">
+                    <div class="showcase-bg">
+                        <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%207.png" alt="Diffusion Platform" loading="lazy">
+                    </div>
+                    <div class="showcase-overlay"></div>
+                    <span class="showcase-index">02 / 04</span>
+                    <span class="showcase-spine">DIFFUSION</span>
+                    <div class="showcase-details">
+                        <span class="showcase-category">CMF Scattering Lab</span>
+                        <h3 class="showcase-title">Light Diffusion<br>Test Platform</h3>
+                        <p class="showcase-desc">Evaluate material light transmission, diffusion, reflection & luminance distribution.</p>
+                        <div class="showcase-tags">
+                            <span>PLA/PETG</span><span>Acrylic</span><span>PC Diffuser</span><span>PWM</span>
+                        </div>
+                        <span class="showcase-btn">Jump to Details</span>
+                    </div>
+                </div>
+
+                <!-- Panel 03: 喷涂箱 -->
+                <div class="showcase-panel" onclick="document.getElementById('prj03').scrollIntoView({behavior:'smooth'});">
+                    <div class="showcase-bg">
+                        <img src="https://raw.githubusercontent.com/R2S-ver/R2S-Personal-Website/main/assets/images/Personal%20Website%2015.png" alt="Spray-Booth" loading="lazy">
+                    </div>
+                    <div class="showcase-overlay"></div>
+                    <span class="showcase-index">03 / 04</span>
+                    <span class="showcase-spine">SPRAY-BOOTH</span>
+                    <div class="showcase-details">
+                        <span class="showcase-category">Pneumatics</span>
+                        <h3 class="showcase-title">Spray-Booth<br>V2</h3>
+                        <p class="showcase-desc">Industrial desktop spray enclosure with dual HEPA & carbon filtration.</p>
+                        <div class="showcase-tags">
+                            <span>HEPA</span><span>Activated Carbon</span><span>Pos. Pressure</span>
+                        </div>
+                        <span class="showcase-btn">Jump to Details</span>
+                    </div>
+                </div>
+
+                <!-- Panel 04: Coming Soon -->
+                <div class="showcase-panel coming-soon">
+                    <div class="showcase-bg placeholder-bg"></div>
+                    <div class="showcase-overlay"></div>
+                    <span class="showcase-index">04 / 04</span>
+                    <span class="showcase-spine">COMING SOON</span>
+                    <div class="showcase-details">
+                        <span class="showcase-category">Future Build</span>
+                        <h3 class="showcase-title">Project<br>In Development</h3>
+                        <p class="showcase-desc">New experimental fabrication project in research phase. Stay tuned.</p>
+                        <div class="showcase-tags">
+                            <span>Classified</span><span>R&D</span>
+                        </div>
+                        <span class="showcase-btn disabled">Coming Soon</span>
+                    </div>
+                </div>
+            </div>
+            <!-- ===== 横向展示条结束 ===== -->
+
+            <!-- PRJ_01: Modular Ballistic Carrier -->
+            <div id="prj01" class="project-detailed chamfer-box reveal">
                 <div class="nasa-tape"></div>
                 <div class="dossier-grid" style="margin-top: 25px;">
                     <div>
@@ -1259,7 +1492,8 @@
                 </div>
             </div>
 
-            <div class="project-detailed chamfer-box reveal" style="border-left: 4px solid var(--accent); margin-bottom: 30px;">
+            <!-- PRJ_02: Light Diffusion Test Platform -->
+            <div id="prj02" class="project-detailed chamfer-box reveal" style="border-left: 4px solid var(--accent); margin-bottom: 30px;">
                 <div class="nasa-tape" style="background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 15px, #000 15px, #000 30px); border-top: 1px solid var(--accent); border-bottom: 1px solid var(--accent);"></div>
 
                 <div style="margin-top: 25px;">
@@ -1466,7 +1700,8 @@
                 </div>
             </div>
 
-            <div class="dossier-grid" style="margin-top: 0;">
+            <!-- PRJ_03: Spray-Booth V2 -->
+            <div id="prj03" class="dossier-grid" style="margin-top: 0;">
                 <div class="tech-box chamfer-box reveal" style="border-left-color: var(--stripe-yellow);">
                     <h4><span style="color: #fff;">PRJ_03</span> <span style="color: var(--stripe-yellow); font-weight: bold;">[ PNEUMATICS ]</span></h4>
                     <h3 style="font-size: 1.8rem; margin: 10px 0; color: #fff;">Spray-Booth V2</h3>
@@ -1608,14 +1843,10 @@
                     p.x += p.vx;
                     p.y += p.vy;
 
-                    if (p.x < 0) { p.x = 0;
-                        p.vx *= -0.7; }
-                    if (p.x > canvas.width) { p.x = canvas.width;
-                        p.vx *= -0.7; }
-                    if (p.y < 0) { p.y = 0;
-                        p.vy *= -0.7; }
-                    if (p.y > canvas.height) { p.y = canvas.height;
-                        p.vy *= -0.7; }
+                    if (p.x < 0) { p.x = 0; p.vx *= -0.7; }
+                    if (p.x > canvas.width) { p.x = canvas.width; p.vx *= -0.7; }
+                    if (p.y < 0) { p.y = 0; p.vy *= -0.7; }
+                    if (p.y > canvas.height) { p.y = canvas.height; p.vy *= -0.7; }
 
                     ctx.fillStyle = p.color;
                     ctx.shadowColor = p.color;
@@ -1692,8 +1923,7 @@
                         b.element.style.left = b.x + '%';
                         b.element.style.top = b.y + '%';
 
-                        const centerX = 50,
-                            centerY = 50;
+                        const centerX = 50, centerY = 50;
                         const dx = b.x - centerX;
                         const dy = b.y - centerY;
                         const angle = Math.atan2(dy, dx);
